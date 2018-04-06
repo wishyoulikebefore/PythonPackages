@@ -1,0 +1,9 @@
+json.loads()
+#将一个JSON编码的字符串转换回一个Python数据结构
+ 
+使用json.loads(content)["data"]
+获得python Dict数据
+
+json.dumps()
+#将一个Python数据结构转换回一个JSON编码的字符串
+
