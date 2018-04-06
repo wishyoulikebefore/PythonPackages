@@ -1,0 +1,61 @@
+math.ceil(x)
+Return the ceiling of x, the smallest integer greater than or equal to x.
+
+math.fabs(x)
+Return the absolute value of x.
+
+math.floor(x)
+Return the floor of x, the largest integer less than or equal to x.
+
+math.fmod(x, y)
+x % y 
+
+math.isclose(a, b, *, rel_tol=1e-09, abs_tol=0.0)
+Return True if the values a and b are close to each other and False otherwise.
+rel_tol is the relative tolerance – it is the maximum allowed difference between a and b, relative to the larger absolute value of a or b. For example, to set a tolerance of 5%, pass rel_tol=0.05. The default tolerance is 1e-09, which assures that the two values are the same within about 9 decimal digits. rel_tol must be greater than zero.
+abs_tol is the minimum absolute tolerance – useful for comparisons near zero. abs_tol must be at least zero.
+
+math.isinf(x)
+Return True if x is a positive or negative infinity, and False otherwise.
+
+math.isnan(x)
+Return True if x is a NaN (not a number), and False otherwise.
+
+math.exp(x)
+Return e**x.
+
+math.expm1(x)
+Return e**x - 1.
+
+math.log(x[, base])
+With one argument, return the natural logarithm of x (to base e).
+
+math.log2(x)
+Return the base-2 logarithm of x. This is usually more accurate than log(x, 2).
+
+math.log10(x)
+Return the base-10 logarithm of x. This is usually more accurate than log(x, 10).
+
+math.pow(x, y)      #返回 xy（x的y次方） 的值，等同于x**y
+Return x raised to the power y. Exceptional cases follow Annex ‘F’ of the C99 standard as far as possible. In particular, pow(1.0, x) and pow(x, 0.0) always return 1.0, even when x is a zero or a NaN. If both x and y are finite, x is negative, and y is not an integer then pow(x, y) is undefined, and raises ValueError.
+math.sqrt(x)
+Return the square root of x.
+
+math.acos(x)
+Return the arc cosine of x, in radians.
+
+math.asin(x)
+Return the arc sine of x, in radians.
+
+math.atan(x)
+Return the arc tangent of x, in radians.
+
+math.cos(x)
+Return the cosine of x radians.
+
+math.sin(x)
+Return the sine of x radians.
+
+math.tan(x)
+Return the tangent of x radians.
+
