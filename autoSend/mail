@@ -1,0 +1,88 @@
+SMTP是发送邮件的协议，Python可以发送纯文本邮件、HTML邮件以及带附件的邮件。
+有smtplib和email两个模块，email负责构造邮件，smtplib负责发送邮件
+
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
+from email.mime.multipart import MIMEMultipart
+
+def autoMail(subject,content):
+    """
+    只发送文字信息
+    """
+    msg_from = 'ttyyzuo@163.com'
+    passwd = 'fd10yyer'  # 填入发送方邮箱的授权码
+    msg_to = '983823942@qq.com'
+    msg = MIMEText(content)                 #构造文字对象
+    msg['Subject'] = subject
+    msg['From'] = msg_from
+    msg['To'] = msg_to
+    try:
+        s = smtplib.SMTP_SSL("smtp.163.com", 465)
+        s.login(msg_from, passwd)
+        s.sendmail(msg_from, msg_to, msg.as_string())
+        print("发送成功")
+    except smtplib.SMTPException:
+        print("发送失败")
+    finally:
+        s.quit()
+
+def myMail(subject,content,graphs=None,graphsName=None,files=None,filesName=None):
+    """
+    发送文字信息和附件，附件支持图片和文件
+    """
+    msg_from = 'ttyyzuo@163.com'
+    passwd = 'fd10yyer'  # 填入发送方邮箱的授权码
+    msg_to = '983823942@qq.com'
+    msg = MIMEMultipart()         #构造邮件本身，用attach添加文字和附件
+    msg['Subject'] = subject
+    msg['From'] = msg_from
+    msg['To'] = msg_to
+    msg.attach(MIMEText(content, 'plain', 'utf-8'))
+
+    if graphs:
+        if len(graphs) != len(graphsName):
+            return "图片列表与图片名列表长度不匹配"
+        else:
+            graphsNum = len(graphs)
+            for nu in range(graphsNum):
+                attachmentG = graphs[nu]
+                outputNameG = graphsName[nu]
+                with open(attachmentG, 'rb') as f:
+                    mime = MIMEBase('image', 'png', filename=outputNameG)
+                    mime.add_header('Content-Disposition', 'attachment',  filename=outputNameG)
+                    mime.add_header('Content-ID', '<0>')
+                    mime.add_header('X-Attachment-Id', '0')
+                    mime.set_payload(f.read())
+                    encoders.encode_base64(mime)
+                    msg.attach(mime)
+    else:
+        pass
+
+    if files:
+        if len(files) != len(filesName):
+            return "文件列表和文件名列表长度不匹配"
+        else:
+            filesNum = len(files)
+            for nu in range(filesNum):
+                attachmentF = files[nu]
+                outputNameF = filesName[nu]
+                mime = MIMEText(open(attachmentF, 'rb').read(), 'base64', 'utf-8')
+                mime["Content-Type"] = 'application/octet-stream'
+                # 这里的filename可以任意写，写什么名字，邮件中显示什么名字
+                mime["Content-Disposition"] = "attachment; filename=%s" %(outputNameF)
+                msg.attach(mime)
+    else:
+        pass
+
+    try:
+        s = smtplib.SMTP_SSL("smtp.163.com", 465)
+        s.login(msg_from, passwd)
+        s.sendmail(msg_from, msg_to, msg.as_string())
+        print("发送成功")
+    except smtplib.SMTPException:
+        print("发送失败")
+    finally:
+        s.quit()
+
