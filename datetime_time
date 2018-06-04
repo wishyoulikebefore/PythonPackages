@@ -1,0 +1,38 @@
+datetime 
+
+获得年，月，日
+In [2]: now = datetime.datetime.now()
+In [3]: now
+Out[3]: datetime.datetime(2018, 5, 27, 22, 14, 48, 47712)
+In [4]: now.year,now.month,now.day
+Out[4]: (2018, 5, 27)
+
+获得时间差
+In [5]: delta = now- datetime.datetime (2018,5,10)
+In [7]: delta.days
+Out[7]: 17
+
+In [11]: datetime.datetime(2018,5,10)+datetime.timedelta(10)
+Out[11]: datetime.datetime(2018, 5, 20, 0, 0)
+
+格式化输出日期
+>>> time.strftime('%Y-%m-%d %H:%M:%S')
+'2017-05-22 10:01:32'
+>>> time.strftime('%Y-%m-%d')    #只输出日期
+'2017-05-22'
+
+判断是否为周末：datetime模块
+#date.isoweekday()
+Return the day of the week as an integer, where Monday is 1 and Sunday is 7
+
+#date.weekday()
+Return the day of the week as an integer, where Monday is 0 and Sunday is 6
+
+
+time
+
+time.time()
+延时
+>>>import time
+>>>time.sleep(10)     #延时10s
+
