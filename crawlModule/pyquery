@@ -1,0 +1,48 @@
+pyquery相比bs4，css选择器的功能更加强大
+
+from pyquery import PyQuery as pq
+
+初始化
+doc = pq(requests.get(url,headers=headers).text)
+
+基本CSS选择器
+#id .class 节点
+content = doc("#sp_main .subject a")
+先选取id为sp_main的节点，再选取其内部class为subject的节点，最后选取节点内部的所有li节点
+#可以叠加多个，空格分开
+
+子孙节点：find
+
+子节点：children()
+items.children(“.active”)
+
+父节点：parent()
+doc(“.list”).parent()
+
+祖先节点：parents()
+
+兄弟节点：sublings()
+
+遍历：items()      #生成器
+doc(“li”).items()
+
+获取属性：attr()
+获取文本：text()
+获取html文本：html()
+
+节点操作
+addClass
+removeClass
+
+伪类选择器
+doc("li:first-child")
+doc("li:last-child")
+doc("li:nth-child(2)") #第2个节点
+doc("li:gt(2)")        #第2个节点之后的节点
+doc("li:nth-child(2n)")    #偶数节点
+doc("li:contains(second)") #包含second文本的节点
+
+
+
+
+ 
