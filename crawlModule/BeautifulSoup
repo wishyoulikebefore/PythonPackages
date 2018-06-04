@@ -1,0 +1,25 @@
+from bs4 import BeautifulSoup
+
+soup = BeautifulSoup(html,"lxml")
+print(soup.prettify())
+
+find：返回第一个匹配元素
+
+find_all(name,attrs)：返回匹配列表
+1）根据节点名name
+soup = BeautifulSoup(r.text,"lxml").find("tbody").find_all(name="tr")
+
+2）根据属性attrs
+soup = BeautifulSoup(r.text,"lxml").find("tbody").find_all(attrs={"title":"Last post"})
+对于常用属性，如id, class 可以直接使用（class要用class_）
+
+3）匹配文本text
+soup = BeautifulSoup(r.text,"lxml").find("tbody").find_all(text=re.compile("2017"))
+
+获取属性
+item[“href”]
+或者 item.attrs[“href”]
+
+获取文本
+item.get_text()
+或者 item.string
