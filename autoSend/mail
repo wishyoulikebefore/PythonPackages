@@ -14,7 +14,7 @@ def autoMail(subject,content):
     msg_from = 'ttyyzuo@163.com'
     passwd = 'fd10yyer'  # 填入发送方邮箱的授权码
     msg_to = '983823942@qq.com'
-    msg = MIMEText(content)                 #构造文字对象
+    msg = MIMEText(content)
     msg['Subject'] = subject
     msg['From'] = msg_from
     msg['To'] = msg_to
@@ -23,19 +23,20 @@ def autoMail(subject,content):
         s.login(msg_from, passwd)
         s.sendmail(msg_from, msg_to, msg.as_string())
         print("发送成功")
+        s.quit()
     except smtplib.SMTPException:
         print("发送失败")
-    finally:
-        s.quit()
+
 
 def myMail(subject,content,graphs=None,graphsName=None,files=None,filesName=None):
     """
     发送文字信息和附件，附件支持图片和文件
+    待解决问题：中文名的乱码
     """
     msg_from = 'ttyyzuo@163.com'
     passwd = 'fd10yyer'  # 填入发送方邮箱的授权码
     msg_to = '983823942@qq.com'
-    msg = MIMEMultipart()         #构造邮件本身，用attach添加文字和附件
+    msg = MIMEMultipart()
     msg['Subject'] = subject
     msg['From'] = msg_from
     msg['To'] = msg_to
@@ -45,10 +46,10 @@ def myMail(subject,content,graphs=None,graphsName=None,files=None,filesName=None
         if len(graphs) != len(graphsName):
             return "图片列表与图片名列表长度不匹配"
         else:
-            for graph,graphName in zip(graphs,graphsName):
+            for graph, graphName in zip(graphs, graphsName):
                 with open(graph, 'rb') as f:
                     mime = MIMEBase('image', 'png', filename=graphName)
-                    mime.add_header('Content-Disposition', 'attachment',  filename=graphName)
+                    mime.add_header('Content-Disposition', 'attachment', filename=graphName)
                     mime.add_header('Content-ID', '<0>')
                     mime.add_header('X-Attachment-Id', '0')
                     mime.set_payload(f.read())
@@ -61,11 +62,11 @@ def myMail(subject,content,graphs=None,graphsName=None,files=None,filesName=None
         if len(files) != len(filesName):
             return "文件列表和文件名列表长度不匹配"
         else:
-            for _file,fileName in zip(files,filesName):
-                mime = MIMEText(open(_file, 'rb').read(), 'base64', 'utf-8')
+            for file, fileName in zip(files, filesName):
+                mime = MIMEText(open(file, 'rb').read(), 'base64', 'utf-8')
                 mime["Content-Type"] = 'application/octet-stream'
                 # 这里的filename可以任意写，写什么名字，邮件中显示什么名字
-                mime["Content-Disposition"] = "attachment; filename=%s" %(fileName)
+                mime["Content-Disposition"] = "attachment; filename=%s" % (fileName)
                 msg.attach(mime)
     else:
         pass
@@ -75,8 +76,6 @@ def myMail(subject,content,graphs=None,graphsName=None,files=None,filesName=None
         s.login(msg_from, passwd)
         s.sendmail(msg_from, msg_to, msg.as_string())
         print("发送成功")
+        s.quit()
     except smtplib.SMTPException:
         print("发送失败")
-    finally:
-        s.quit()
-
