@@ -26,3 +26,17 @@ while loop:
         loop = False
         print("Iteration is stopped.")
 df = pd.concat(chunks, ignore_index=True)
+
+或者利用paratext模块(速度可以是2.5G/s)
+加载csv文件
+df = paratext.load_csv_to_pandas("hepatitis.csv")
+
+列迭代器
+paratext.load_csv_as_iterator(filename,expand=True,forget=True)
+#expand关键字强制ParaText使用字符串来表示类别，而不是使用整型
+#forget可以让迭代器去释放已经被解析器访问过的列数据所占据的空间
+
+加载入dict
+dict_frame, levels = paratext.load_csv_to_dict(filename)
+#dict_frame:maps column names to column data
+#levels:contains a list of level strings for each categorical column
