@@ -45,13 +45,10 @@ def myMail(subject,content,graphs=None,graphsName=None,files=None,filesName=None
         if len(graphs) != len(graphsName):
             return "图片列表与图片名列表长度不匹配"
         else:
-            graphsNum = len(graphs)
-            for nu in range(graphsNum):
-                attachmentG = graphs[nu]
-                outputNameG = graphsName[nu]
-                with open(attachmentG, 'rb') as f:
-                    mime = MIMEBase('image', 'png', filename=outputNameG)
-                    mime.add_header('Content-Disposition', 'attachment',  filename=outputNameG)
+            for graph,graphName in zip(graphs,graphsName):
+                with open(graph, 'rb') as f:
+                    mime = MIMEBase('image', 'png', filename=graphName)
+                    mime.add_header('Content-Disposition', 'attachment',  filename=graphName)
                     mime.add_header('Content-ID', '<0>')
                     mime.add_header('X-Attachment-Id', '0')
                     mime.set_payload(f.read())
@@ -64,14 +61,11 @@ def myMail(subject,content,graphs=None,graphsName=None,files=None,filesName=None
         if len(files) != len(filesName):
             return "文件列表和文件名列表长度不匹配"
         else:
-            filesNum = len(files)
-            for nu in range(filesNum):
-                attachmentF = files[nu]
-                outputNameF = filesName[nu]
-                mime = MIMEText(open(attachmentF, 'rb').read(), 'base64', 'utf-8')
+            for _file,fileName in zip(files,filesName):
+                mime = MIMEText(open(_file, 'rb').read(), 'base64', 'utf-8')
                 mime["Content-Type"] = 'application/octet-stream'
                 # 这里的filename可以任意写，写什么名字，邮件中显示什么名字
-                mime["Content-Disposition"] = "attachment; filename=%s" %(outputNameF)
+                mime["Content-Disposition"] = "attachment; filename=%s" %(fileName)
                 msg.attach(mime)
     else:
         pass
