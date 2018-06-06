@@ -21,7 +21,28 @@ def chunked(iterable, n):
     return iter(functools.partial(take, n, iter(iterable)), [])  #iter(callable, sentinel)
 
 iter(callable, sentinel) 会持续调用参数callable直至其返回sentinel
-因此会使得iter(iterable)不断进行直至抛出错误
-黑科技
+因此会使得iter(iterable)不断进行直至抛出错误(黑科技)
+
+wraps
+当使用一个装饰器，就是用另一个函数替换当前函数，导致使用装饰器会丢失这个函数的信息
+当wraps充当其装饰器时，可以避免这个问题
+from functools import wraps     
+def my_decorator(func):  
+    def wrapper(*args, **kwargs):  
+        '''''decorator'''  
+        print('Calling decorated function...')  
+        return func(*args, **kwargs)  
+    return wrapper    
+ 
+@my_decorator   
+def example():  
+    """Docstring"""   
+    print('Called example function')  
+print(example.__name__, example.__doc__) 
+
+执行结果
+('wrapper', 'decorator')
+
+
 
 
