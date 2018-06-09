@@ -1,0 +1,104 @@
+读取文本格式的数据
+read_table(sep=”\t”)
+read_csv(sep=”,”)              #Read CSV (comma-separated) file into DataFrame
+参数：
+path：文件系统位置
+sep或delimiter：对各字段进行拆分的字符序列或正则表达式
+header：用作列名的行号，默认第一行；不然需要指定None
+index_col：用作行索引的列编号或列名
+names：自定义列名，结合header=None
+skiprows：需要忽略的行数
+na_values：用于替换NA的值
+parse_dates：尝试将数据解析为日期
+nrows：从头开始，需要读取的行数
+chunksize：文件块的大小（用于迭代）
+skip_footer：从文件末尾开始，需要忽略的行数
+
+In [3]: pd.read_csv("ex2.csv",header=None)
+Out[3]:
+   0   1   2   3      4
+0  1   2   3   4  hello
+1  5   6   7   8  world
+2  9  10  11  12    foo
+自己定义列名
+In [4]: pd.read_csv("ex2.csv",names=["a","b","c","d","message"])
+Out[4]:
+   a   b   c   d message
+0  1   2   3   4   hello
+1  5   6   7   8   world
+2  9  10  11  12     foo
+将message列做成索引
+In [5]: pd.read_csv("ex2.csv",names=["a","b","c","d","message"],index_col="message")
+Out[5]:
+         a   b   c   d
+message
+hello    1   2   3   4
+world    5   6   7   8
+foo      9  10  11  12
+
+层次化索引
+In [7]: pd.read_csv("csv_mindex.csv",index_col=["key1","key2"])
+Out[7]:
+           value1  value2
+key1 key2
+one  a          1       2
+     b          3       4
+     c          5       6
+     d          7       8
+two  a          9      10
+     b         11      12
+     c         13      14
+     d         15      16
+
+正则表示分隔符
+In [8]: pd.read_table("ex3.txt",sep="\s+")
+Out[8]:
+            A         B         C
+aaa -0.264438 -1.026059 -0.619500
+bbb  0.927272  0.302904 -0.032399
+ccc -0.264273 -0.386314 -0.217601
+ddd -0.871858 -0.348382  1.100491
+#由于列名比数据行的数量少，因此read_table推断第一列为索引
+
+In [9]: pd.read_csv("ex5.csv")
+Out[9]:
+  something  a   b     c   d message
+0       one  1   2   3.0   4     NaN
+1       two  5   6   NaN   8   world
+2     three  9  10  11.0  12     foo
+指定NA标记值
+In [11]: pd.read_csv("ex5.csv",na_values={"message":["foo","NA"],"something":["two"]})
+Out[11]:
+  something  a   b     c   d message
+0       one  1   2   3.0   4     NaN
+1       NaN  5   6   NaN   8   world
+2     three  9  10  11.0  12     NaN
+
+逐块读取文本文件
+#统计key各出现次数
+In [12]: chunker=pd.read_csv("ex6.csv",chunksize=1000)
+In [13]: tot=Series([])
+In [14]: for piece in chunker:
+...:     tot = tot.add(piece["key"].value_counts(),fill_value=0)
+In [30]: tot.sort_values(ascending=False)[:10]
+Out[30]:
+E    368.0
+X    364.0
+L    346.0
+O    343.0
+Q    340.0
+M    338.0
+J    337.0
+F    335.0
+K    334.0
+H    330.0
+
+将数据输出到文本格式
+to_csv(path=None, sep=',', na_rep='', columns=None, header=True, index=True, index_label=None)
+#header：布尔值或字符串列表，default=True，输出列名
+
+读取Excel文件（需要xlrd和openpyxl）
+读取excel
+read_excel(io, sheetname=0, header=0, skiprows=None, index_col=None, names=None, parse_cols=None, date_parser=None, na_values=None)
+写入excel
+to_excel(excel_writer, sheet_name='Sheet1', na_rep='', columns=None, header=True, index=True, index_label=None, startrow=0, startcol=0)
