@@ -1,0 +1,153 @@
+groupby技术
+拆分—应用—合并
+ 
+In [172]: df = DataFrame({"key1":["a","a","b","b","a"],"key2":["one","two","one","two","one"],
+...:                      "data1":np.random.randn(5),"data2":np.random.randn(5)})
+In [176]: means = df["data1"].groupby([df["key1"],df["key2"]]).mean()
+等同于
+In [181]: means = df.groupby(["key1","key2"])["data1"].mean()
+In [177]: means
+Out[177]: 
+key1  key2
+a     one     0.868589
+      two     0.308173
+b     one    -0.599301
+two     0.850721
+
+层次化索引
+In [183]: means.unstack()
+Out[183]: 
+key2       one       two
+key1                    
+a     0.868589  0.308173
+b    -0.599301  0.850721
+
+对分组进行迭代
+In [186]: for (k1,k2),group in df.groupby(["key1","key2"]):
+     ...:     print(k1,k2)
+     ...:     print(group)
+a one
+      data1     data2 key1 key2
+0  1.231969  1.737238    a  one
+4  0.505210  0.273627    a  one
+a two
+      data1     data2 key1 key2
+1  0.308173  1.300424    a  two
+b one
+      data1     data2 key1 key2
+2 -0.599301  0.029886    b  one
+b two
+      data1    data2 key1 key2
+3  0.850721 -1.90666    b  two
+
+通过字典或Series进行分组
+In [187]: people = DataFrame(np.random.randn(5,5),columns=["a","b","c","d","e"],
+...:                         index=["Joe","Steve","Wes","Jim","Travis"])
+In [190]: people._ix[2:3,["b","c"]]=np.nan
+In [191]: people
+Out[191]: 
+               a         b         c         d         e
+Joe    -0.389513 -0.579561  1.597121  0.188869  0.742434
+Steve   0.570828  0.283290 -0.940018 -0.482798  0.848784
+Wes    -2.060572       NaN       NaN -0.123969 -1.350227
+Jim    -2.177417 -0.573031 -0.663307 -0.454482 -0.382754
+Travis  1.376451  0.876391  2.229257  1.643433  1.069549
+In [193]: people.groupby(mapping,axis=1).sum()
+Out[193]: 
+            blue       red
+Joe     1.785990 -0.226639
+Steve  -1.422817  1.702902
+Wes    -0.123969 -3.410799
+Jim    -1.117789 -3.133202
+Travis  3.872690  3.322390
+
+数据聚合，使用自定义函数
+传入agg
+In [195]: grouped = df.groupby("key1")
+In [196]: grouped.agg(lambda arr: arr.max()-arr.min())
+Out[196]: 
+         data1     data2
+key1                    
+a     0.923796  1.463610
+b     1.450022  1.936546
+
+#如果传入的是一个由（name,function）元组组成的列表，则各元组的第一个元素会被用作列名
+In [199]: tips = pd.read_csv("/Users/zty/Downloads/rawdata/ch08/tips.csv")
+In [200]: tips["tip_pct"] = tips["tip"]/tips["total_bill"]
+In [201]: tips[:5]
+Out[201]: 
+   total_bill   tip     sex smoker  day    time  size   tip_pct
+0       16.99  1.01  Female     No  Sun  Dinner     2  0.059447
+1       10.34  1.66    Male     No  Sun  Dinner     3  0.160542
+2       21.01  3.50    Male     No  Sun  Dinner     3  0.166587
+3       23.68  3.31    Male     No  Sun  Dinner     2  0.139780
+4       24.59  3.61  Female     No  Sun  Dinner     4  0.146808
+
+In [202]: grouped = tips.groupby(["sex","smoker"])
+In [203]: grouped = tips.groupby(["sex","smoker"])["tip_pct"]
+In [204]: grouped.agg([("foo","mean"),("bar",np.std)])
+Out[204]: 
+                    foo       bar
+sex    smoker                    
+Female No      0.156921  0.036421
+       Yes     0.182150  0.071595
+Male   No      0.160669  0.041849
+Yes     0.152771  0.090588
+#以无索引形式返回聚合数据
+In [206]: tips.groupby(["sex","smoker"],as_index=False).mean()
+Out[206]: 
+      sex smoker  total_bill       tip      size   tip_pct
+0  Female     No   18.105185  2.773519  2.592593  0.156921
+1  Female    Yes   17.977879  2.931515  2.242424  0.182150
+2    Male     No   19.791237  3.113402  2.711340  0.160669
+3    Male    Yes   22.284500  3.051167  2.500000  0.152771
+
+apply()
+#沿着DataFrame的某条轴应用函数
+In [43]: df = pd.DataFrame([[4, 9],] * 3, columns=['A', 'B'])
+In [46]: df.apply(lambda x: pd.Series([1, 2], index=['foo', 'bar']), axis=1)
+Out[46]:
+   foo  bar
+0    1    2
+1    1    2
+2    1    2
+
+In [214]: def top(df,n=5,column="tip_pct"):
+     ...:     return df.sort_values(by=column)[-n:]
+In [215]: tips.groupby("smoker").apply(top)
+Out[215]: 
+            total_bill   tip     sex smoker   day    time  size   tip_pct
+smoker                                                                   
+No     88        24.71  5.85    Male     No  Thur   Lunch     2  0.236746
+       185       20.69  5.00    Male     No   Sun  Dinner     5  0.241663
+       51        10.29  2.60  Female     No   Sun  Dinner     2  0.252672
+       149        7.51  2.00    Male     No  Thur   Lunch     2  0.266312
+       232       11.61  3.39    Male     No   Sat  Dinner     2  0.291990
+Yes    109       14.31  4.00  Female    Yes   Sat  Dinner     2  0.279525
+       183       23.17  6.50    Male    Yes   Sun  Dinner     4  0.280535
+       67         3.07  1.00  Female    Yes   Sat  Dinner     1  0.325733
+       178        9.60  4.00  Female    Yes   Sun  Dinner     2  0.416667
+172        7.25  5.15    Male    Yes   Sun  Dinner     2  0.710345
+#将group_keys=False传入groupby可禁止分组键
+
+分位数和桶分析
+cut(x, bins, right=True, labels=None)：得到长度相等的区间
+qcut(x, q, labels=None)：得到数据点相等的区间
+
+用特定于分组的值填充缺失值
+In [218]: states = ["Ohio","New York","Vermont","Florida","Oregon","Nevada","California","Idaho"]
+In [219]: group_key=["East"]*4+["West"]*4
+In [220]: data = Series(np.random.randn(8),index=states)
+In [221]: data[["Vermont","Nevada","Idaho"]] = np.nan
+In [223]: fill_values = {"East":0.5,"West":-1}
+In [224]: fill_func = lambda g: g.fillna(fill_values[g.name])     #分组具有一个name属性
+In [225]: data.groupby(group_key).apply(fill_func)
+Out[225]: 
+Ohio         -1.056641
+New York      0.497320
+Vermont       0.500000
+Florida      -0.602359
+Oregon       -1.442974
+Nevada       -1.000000
+California    1.167836
+Idaho        -1.000000
