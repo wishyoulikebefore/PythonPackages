@@ -1,0 +1,536 @@
+Pandas 是基于 NumPy 的一个非常好用的库
+Pandas 里定义了两种数据类型：Series 和 DataFrame
+import pandas as pd
+from pandas import Series, Dataframe
+
+Series 
+“竖起来”的 list，由一组数据以及一组索引组成
+索引在左边，值在右边，默认创建索引为0到N-1的整数型索引
+>>>Series([100,"PYTHON","Soochow","Qiwsir"])
+>>>
+0        100
+1     PYTHON
+2    Soochow
+3     Qiwsir
+>>>Series([100,"PYTHON","Soochow","Qiwsir"],index=["mark","title","university","name"])
+>>>
+mark              100
+title          PYTHON
+university    Soochow
+name           Qiwsir
+
+可以通过values和index属性获取其数组表示形式和索引对象
+可以Dict转化为Series对象
+>>> D={"python":8000,"c++":8100,"php":8200}
+>>> Series(D)
+c++       8100
+php       8200
+python    8000
+
+自定义索引可以自动对齐
+>>> pandas.Series(D,index=["java","python","c++","php"])
+java         NaN
+python    8000.0
+c++       8100.0
+php       8200.0
+
+isnull()和notnull()可用于检测缺失数据
+
+Series最重要的功能：运算中自动对齐不同索引的数据
+
+Series对象本身及其索引都有一个name属性
+>>>obj4.name = “population”
+>>>obj4.index.name = “state”
+
+DataFrame 
+是一种表格型的数据结构，非常接近于电子表格或者类似 mysql 数据库的形式
+既有行索引，又有列索引(index对象不可修改)
+>>> data = {"state":["Ohio","Ohio","Ohio","Nevada","Nevada"],
+	"year":[2000,2001,2002,2001,2002],
+	"pop":[1.5,1.7,3.6,2.4,2.9]}
+>>> frame = DataFrame(data,columns=["year","state","pop","debt"],
+		  index=["one","two","three","four","five"])
+>>> frame
+       year   state  pop debt
+one    2000    Ohio  1.5  NaN
+two    2001    Ohio  1.7  NaN
+three  2002    Ohio  3.6  NaN
+four   2001  Nevada  2.4  NaN
+five   2002  Nevada  2.9  NaN
+
+获取列
+>>> frame["state"]
+one        Ohio
+two        Ohio
+three      Ohio
+four     Nevada
+five     Nevada
+Name: state
+获取行
+>>> frame.ix["three"]
+year     2002
+state    Ohio
+pop       3.6
+debt      NaN
+Name: three
+
+将列表或数组赋值给某列时，长度必须与DataFrame的长度相匹配；如果赋值的是一个Series，就会精确匹配DataFrame的索引，空位填充NA
+>>> val = Series([-1.2,-1.5,-1.7],index=["two","four","five"])
+>>> frame["debt"] = val
+>>> frame
+       year   state  pop  debt
+one    2000    Ohio  1.5   NaN
+two    2001    Ohio  1.7  -1.2
+three  2002    Ohio  3.6   NaN
+four   2001  Nevada  2.4  -1.5
+five   2002  Nevada  2.9  -1.7
+删除列并返回新对象：del frame[]       返回被删除的列：frame.pop()
+Series和DataFrame的基本功能
+重新索引：reindex，如果某个索引值当前不存在，就引入缺失值
+>>> obj = Series([4.5,7.2,-5.3,3.6],index=["d","b","a","c"])
+>>> obj.reindex(["a","b","c","d","e"],fill_value=0)
+a   -5.3
+b    7.2
+c    3.6
+d    4.5
+e    0.0
+插值：ffill或pad（前向填充）；bfill（后向填充）
+>>> obj = Series(["blue","purple","yellow"],index=[0,2,4])
+>>> obj.reindex(range(6),method="ffill")    
+0      blue
+1      blue
+2    purple
+3    purple
+4    yellow
+5    yellow
+使用columns关键字即可重新索引列
+使用ix对行和列同时进行重新索引
+>>> frame = DataFrame(np.arange(9).reshape((3,3)),index=["a","c","d"],
+		  columns=["Ohio","Texas","California"])
+>>> frame.ix[["a","b","c","d"],["Texas","Utah","California"]]
+   Texas  Utah  California
+a    1.0   NaN         2.0
+b    NaN   NaN         NaN
+c    4.0   NaN         5.0
+d    7.0   NaN         8.0
+
+丢弃指定轴上的项并返回新对象：drop
+#若要在数据源上修改，需添加inplace=True
+对于Series
+>>> obj = Series(np.arange(5),index=["a","b","c","d","e"])
+>>> obj.drop("c")
+a    0
+b    1
+d    3
+e    4
+对于DataFrame
+>>> data = DataFrame(np.arange(16).reshape((4,4)),
+		 index=["Ohio","Colorado","Utah","New York"],
+		 columns=["one","two","three","four"])
+>>> data.drop(["Colorado","Ohio"])
+或者data.drop(data.index[:2])
+          one  two  three  four
+Utah        8    9     10    11
+New York   12   13     14    15
+>>> data.drop(["two","three"],axis=1)
+或者>>> data.drop(data.columns[1:3],axis=1)
+          one  four
+Ohio        0     3
+Colorado    4     7
+Utah        8    11
+New York   12    15
+
+增加指定轴上的内容
+添加列：直接创建或insert或者assign
+>>> data["judge"]=np.where(data["four"]>10,"positive","negative")
+>>> data
+          one  two  three  four     judge
+Ohio        0    1      2     3  negative
+Colorado    4    5      6     7  negative
+Utah        8    9     10    11  positive
+New York   12   13     14    15  positive
+
+insert(loc, column, value, allow_duplicates=False)
+>>> data.insert(4,"five",data["four"])
+>>> data
+          one  two  three  four  five
+Ohio        0    1      2     3     3
+Colorado    4    5      6     7     7
+Utah        8    9     10    11    11
+New York   12   13     14    15    15
+
+>>> data.assign(accum=lambda x:x["one"]+x["two"]+x["three"]+x["four"])
+          one  two  three  four  accum
+Ohio        0    1      2     3      6
+Colorado    4    5      6     7     22
+Utah        8    9     10    11     38
+New York   12   13     14    15     54
+
+添加行：先切割再append或concat
+>>> insertRow=DataFrame([["a","b","c","d"]],columns=["one","two","three","four"])
+>>>newdata=data[:2].append(insertRow,ignore_index=True).append(data[2:],ignore_index=True)      #ignore_index=True：忽略原索引，重新排列
+>>> newdata
+  one two three four
+0   0   1     2    3
+1   4   5     6    7
+2   a   b     c    d
+3   8   9    10   11
+4  12  13    14   15
+或者
+>>> newdata=pd.concat([data[:2],insertRow,data[2:]],ignore_index=True)
+>>> newdata
+  one two three four
+0   0   1     2    3
+1   4   5     6    7
+2   a   b     c    d
+3   8   9    10   11
+4  12  13    14   15
+
+索引、选取和过滤
+对Series
+利用标签的切片运算末端封闭，和普通python切片不同（仅对Series成立）
+>>> obj = Series(np.arange(4),index=["a","b","c","d"])
+>>> obj[obj<2]
+a    0
+b    1
+>>> obj["b":"c"]
+b    1
+c    2
+对DataFrame
+取列：无法进行切片运算
+>>> data = DataFrame(np.arange(16).reshape((4,4)), 		 index=["Ohio","Colorado","Utah","New York"], 		 columns=["one","two","three","four"])
+>>> data[["two","three"]]
+          two  three
+Ohio        1      2
+Colorado    5      6
+Utah        9     10
+New York   13     14
+取行：切片或布尔型数组
+>>> data[:2]
+          one  two  three  four
+Ohio        0    1      2     3
+Colorado    4    5      6     7
+>>> data[data["three"]>5]
+          one  two  three  four
+Colorado    4    5      6     7
+Utah        8    9     10    11
+New York   12   13     14    15
+或者使用ix
+>>> data.ix[["Colorado","Utah"],[3,0,1]]
+          four  one  two
+Colorado     7    4    5
+Utah        11    8    9
+>>> data.ix[2]
+one       8
+two       9
+three    10
+four     11
+>>> data.ix[:"Utah","two"]
+Ohio        1
+Colorado    5
+Utah        9
+或者使用iloc
+>>> data.iloc[1:3,2:4]
+          three  four
+Colorado      6     7
+Utah         10    11
+
+根据行标签和列标签选取或设置值
+get_value    set_value
+
+带有重复值的轴索引
+>>> obj = Series(range(5),index=["a","a","b","b","c"])
+>>> obj.index.is_unique
+False
+如果某个索引对应多个值，则返回一个Series
+
+层次化索引
+>>> df = pd.DataFrame({'AAA' : [4,5,6,7], 'BBB' : [10,20,30,40],'CCC' : [100,50,-30,-50]})
+
+if-then
+#对一列
+>>> df.loc[df.AAA >= 5,'BBB'] = -1
+>>> df
+   AAA  BBB  CCC
+0    4   10  100
+1    5   -1   50
+2    6   -1  -30
+3    7   -1  -50
+#对2列
+>>> df.loc[df.AAA >= 5,['BBB','CCC']] = 555
+>>> df
+   AAA  BBB  CCC
+0    4   10  100
+1    5  555  555
+2    6  555  555
+3    7  555  555
+
+>>>df_mask = pd.DataFrame({'AAA' : [True] * 4, 'BBB' : [False] * 4,'CCC' : [True,False] * 2})
+>>>df.where(df_mask,-1000)
+   AAA   BBB   CCC
+0    4 -1000   100
+1    5 -1000  -1000
+2    6 -1000   555
+3    7 -1000  -1000
+
+if-then-else
+>>> df['logic'] = np.where(df['AAA'] > 5,'high','low')
+>>> df
+   AAA  BBB  CCC logic
+0    4   10  100   low
+1    5   20   50   low
+2    6   30  -30  high
+3    7   40  -50  high
+
+And(&)
+>>> newseries = df.loc[(df['BBB'] < 25) & (df['CCC'] >= -40), 'AAA']
+>>> newseries
+0    4
+1	5
+
+Or(|)
+>>> df.loc[(df['BBB'] > 25) | (df['CCC'] >= 75), 'AAA'] = 0.1
+>>> df
+   AAA  BBB  CCC
+0  0.1   10  100
+1  5.0   20   50
+2  0.1   30  -30
+3  0.1   40  -50
+
+算数运算，数据对齐及填充
+>>> df1 = DataFrame(np.arange(20).reshape(4,5),columns=list("abcde"))
+>>> df2 = DataFrame(np.arange(12).reshape(3,4),columns=list("abcd"))
+相加时，没有重叠的位置会产生NA值
+>>> df1+df2
+      a     b     c     d   e
+0   0.0   2.0   4.0   6.0 NaN
+1   9.0  11.0  13.0  15.0 NaN
+2  18.0  20.0  22.0  24.0 NaN
+3   NaN   NaN   NaN   NaN NaN
+利用add方法，传入df2以及一个fill_value参数
+>>> df1.add(df2,fill_value=0)
+>>> df1.add(df2,fill_value=0)
+      a     b     c     d     e
+0   0.0   2.0   4.0   6.0   4.0
+1   9.0  11.0  13.0  15.0   9.0
+2  18.0  20.0  22.0  24.0  14.0
+3  15.0  16.0  17.0  18.0  19.0
+#add sub div mul
+#利用Series([ ])和value_counts()和加法可用于替代collections.defaultdict(int)
+
+函数应用和映射
+将函数应用到由各列或行所形成的一维数组：apply
+>>> frame = DataFrame(np.random.randn(4,3),columns=list("bde"),
+		  index=["Utah","Ohio","Texas","Oregon"])
+>>> f = lambda x: x.max()-x.min()
+>>> frame.apply(f)
+b    1.182509
+d    1.262156
+e    4.154076
+>>> frame.apply(f,axis=1)
+Utah      1.617572
+Ohio      2.266550
+Texas     3.328962
+Oregon    2.347125
+得到浮点值的格式化字符串：applymap
+>> format = lambda x: "%.2f" %x
+>>> frame.applymap(format)
+
+排序和排名
+对行或者索引进行排序：sort_index(axis=0, ascending=True,inplace=False) 
+>>> frame = DataFrame(np.arange(8).reshape(2,4),index=["three","one"],
+		  columns=list("dabc"))
+>>> frame.sort_index()
+       d  a  b  c
+one    4  5  6  7
+three  0  1  2  3
+>>> frame.sort_index(axis=1)
+       a  b  c  d
+three  1  2  3  0
+one    5  6  7  4
+按值进行排序：sort_values(by, axis=0, ascending=True, inplace=False)  
+#by：str或者str list，指代轴
+>>> frame.sort_values(by="b")
+       d  a  b  c
+three  0  1  2  3
+one    4  5  6  7
+>>> frame.sort_values(by=["a","b"])
+       d  a  b  c
+three  0  1  2  3
+one    4  5  6  7
+排名：rank(axis=0,mmethod=”average”,ascending=True)
+# method : {'average', 'min', 'max', 'first', 'dense'}
+        * average: 相等分组中为各个值平均分配排名
+        * min: 整个分组中最小排名
+        * max: 整个分组中最大排名
+        * first: 按值在原始数据中出现顺序分配排名
+        * dense: like 'min', but rank always increases by 1 between groups
+>> obj=Series([-7,4,3,4,-2])
+>>> obj.rank()
+0    1.0
+1    4.5
+2    3.0
+3    4.5
+4    2.0
+>>> obj.rank(method="first")
+0    1.0
+1    4.0
+2    3.0
+3    5.0
+4    2.0
+>>> frame=DataFrame({"b":[4.3,7,-3,2],"a":[0,1,0,1],"c":[-2,5,8,-2.5]})
+>>> frame.rank(axis=1)
+     a    b    c
+0  2.0  3.0  1.0
+1  1.0  3.0  2.0
+2  2.0  1.0  3.0
+3  2.0  3.0  1.0
+
+汇总和计算统计描述
+count()：非NA值的数量
+min max
+argmin argmax：获取最大值或最小值得索引位置
+idxmin idxmax：获取最大值或最小值的索引值
+sum(axis=0)  mean(axis=0,skipna=True)
+var std
+cumsum cumin cummax cumprod
+diff：计算一阶差分，对时间序列很有用
+describe()
+对数值型数据
+>>> df=DataFrame([[1.4,np.nan],[7.1,-4.5],[np.nan,np.nan],[0.75,-1.3]],
+	     index=["a","b","c","d"],columns=["one","two"])
+>>> df.describe()
+            one       two
+count  3.000000  2.000000
+mean   3.083333 -2.900000
+std    3.493685  2.262742
+min    0.750000 -4.500000
+25%    1.075000 -3.700000
+50%    1.400000 -2.900000
+75%    4.250000 -2.100000
+max    7.100000 -1.300000
+对非数值型数据
+>>> obj=Series(["a","a","b","c"]*4)
+>>> obj.describe()
+count     16
+unique     3
+top        a
+freq       8
+
+唯一值、值计数及成员资格
+对Series
+>>> obj=Series(["c","a","d","a","a","b","b","c","c"])
+获得唯一值：unique      #会纳入NA
+>>> obj.unique()
+array(['c', 'a', 'd', 'b'], dtype=object)
+值计数：value_counts()   #不会纳入NA
+>>> obj.value_counts()
+c    3
+a    3
+b    2
+d    1
+矢量化判断成员资格：isin
+>>> df = pd.DataFrame({'A': [1, 2, 3], 'B': [1, 4, 7]})
+>>> df.isin({'A': [1, 3], 'B': [4, 7, 12]})
+       A      B
+0   True  False  # Note that B didn't match the 1 here.
+1  False   True
+2   True   True
+去除某一列的特殊值：boolean减法^
+In [23]: df[True^df["A"].isin([1])]
+Out[23]: 
+   A  B
+1  2  4
+2  3  7
+
+In [24]: df["A"][True^df["A"].isin([1])]
+Out[24]: 
+1    2
+2    3
+
+处理缺失数据
+dropna(axis=0,how=”any”,thresh=None,inpalce=False)
+#how : {'any', 'all'}
+#thresh：int，指定非NA数目
+#inplace=true：就地修改
+fillna(value=None,method=None,axis=None,limit=None,inplace=False)
+# method : {'backfill', 'bfill', 'pad', 'ffill', None}, default None
+        pad / ffill: 前向填充
+        backfill / bfill: 后向填充
+isnull()
+notnull()
+过滤缺失数据
+>>> data=Series([1,np.nan,3.5,np.nan,7])
+>>> data.dropna()     #等同于data[data.notnull()]
+0    1.0
+2    3.5
+4    7.0
+>>> data=DataFrame([[1,6.5,3],[1,np.nan,np.nan],[np.nan,np.nan,np.nan],
+		[np.nan,6.5,3]])
+>>> data.dropna(axis=1,how="all")
+     0    1    2
+0  1.0  6.5  3.0
+1  1.0  NaN  NaN
+2  NaN  NaN  NaN
+3  NaN  6.5  3.0
+>>> data.dropna(thresh=2)
+     0    1    2
+0  1.0  6.5  3.0
+3  NaN  6.5  3.0
+填充缺失数据
+>>> frame=DataFrame(np.random.randn(7,3))
+>>> frame.ix[:4,1]=np.nan
+>>> frame.ix[:2,2]=np.nan
+>>> frame.fillna({1:0.5,2:-1})
+          0         1         2
+0 -1.020684  0.500000 -1.000000
+1 -1.373018  0.500000 -1.000000
+2  0.773298  0.500000 -1.000000
+3  0.744024  0.500000 -0.025133
+4  0.271405  0.500000  0.172731
+5  1.760492  2.199585  0.002332
+6 -0.322384  0.010941  0.956640
+
+将DataFrame的一个或多个列当作行索引使用：set_index
+In [20]: frame = DataFrame(np.arange(8).reshape(2,4),index=["three","one"],
+    ...:           columns=list("dabc"))
+
+In [21]: frame
+Out[21]:
+       d  a  b  c
+three  0  1  2  3
+one    4  5  6  7
+
+In [22]: frame.set_index("a")
+Out[22]:
+   d  b  c
+a
+1  0  2  3
+5  4  6  7
+
+date_range(start=None,end=None,periods=None)
+>>> pd.date_range("20130101",periods=6)
+DatetimeIndex(['2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04',
+               '2013-01-05', '2013-01-06'],
+              dtype='datetime64[ns]', freq='D')
+
+>>> pd.date_range("20130101","20130115")
+DatetimeIndex(['2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04',
+               '2013-01-05', '2013-01-06', '2013-01-07', '2013-01-08',
+               '2013-01-09', '2013-01-10', '2013-01-11', '2013-01-12',
+               '2013-01-13', '2013-01-14', '2013-01-15'],
+              dtype='datetime64[ns]', freq='D')
+
+>>> dates = pd.date_range('20130101', periods=6)
+>>> df = pd.DataFrame(np.random.randn(6,4), index=dates, columns=list('ABCD'))
+>>> df
+                   A         B         C         D
+2013-01-01 -0.345947 -0.386022 -0.965066  1.383920
+2013-01-02 -1.071669 -0.749679  1.793304  1.129647
+2013-01-03  0.933385 -0.553163  0.428559 -0.154978
+2013-01-04 -0.173693  0.222889  0.510496 -0.872039
+2013-01-05 -1.820399  0.530999  0.388742  0.295768
+2013-01-06  0.981898  2.695860 -1.242553  1.659078
+
+
+
