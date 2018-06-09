@@ -1,6 +1,7 @@
 读取文本格式的数据
 read_table(sep=”\t”)
-read_csv(sep=”,”)              #Read CSV (comma-separated) file into DataFrame
+read_csv(sep=”,”)    
+         
 参数：
 path：文件系统位置
 sep或delimiter：对各字段进行拆分的字符序列或正则表达式
@@ -20,21 +21,12 @@ Out[3]:
 0  1   2   3   4  hello
 1  5   6   7   8  world
 2  9  10  11  12    foo
-自己定义列名
+
+自定义列名
 In [4]: pd.read_csv("ex2.csv",names=["a","b","c","d","message"])
-Out[4]:
-   a   b   c   d message
-0  1   2   3   4   hello
-1  5   6   7   8   world
-2  9  10  11  12     foo
+
 将message列做成索引
 In [5]: pd.read_csv("ex2.csv",names=["a","b","c","d","message"],index_col="message")
-Out[5]:
-         a   b   c   d
-message
-hello    1   2   3   4
-world    5   6   7   8
-foo      9  10  11  12
 
 层次化索引
 In [7]: pd.read_csv("csv_mindex.csv",index_col=["key1","key2"])
@@ -60,12 +52,6 @@ ccc -0.264273 -0.386314 -0.217601
 ddd -0.871858 -0.348382  1.100491
 #由于列名比数据行的数量少，因此read_table推断第一列为索引
 
-In [9]: pd.read_csv("ex5.csv")
-Out[9]:
-  something  a   b     c   d message
-0       one  1   2   3.0   4     NaN
-1       two  5   6   NaN   8   world
-2     three  9  10  11.0  12     foo
 指定NA标记值
 In [11]: pd.read_csv("ex5.csv",na_values={"message":["foo","NA"],"something":["two"]})
 Out[11]:
@@ -74,24 +60,45 @@ Out[11]:
 1       NaN  5   6   NaN   8   world
 2     three  9  10  11.0  12     NaN
 
-逐块读取文本文件
-#统计key各出现次数
-In [12]: chunker=pd.read_csv("ex6.csv",chunksize=1000)
-In [13]: tot=Series([])
-In [14]: for piece in chunker:
-...:     tot = tot.add(piece["key"].value_counts(),fill_value=0)
-In [30]: tot.sort_values(ascending=False)[:10]
-Out[30]:
-E    368.0
-X    364.0
-L    346.0
-O    343.0
-Q    340.0
-M    338.0
-J    337.0
-F    335.0
-K    334.0
-H    330.0
+读取大文件
+利用chunksize：指定每次读取的行数
+In [138]: reader = pd.read_table('tmp.sv', sep='|', chunksize=1000)
+In [139]: reader
+Out[139]: <pandas.io.parsers.TextFileReader at 0x120d2f290>
+
+In [140]: for chunk in reader:
+   .....:     print(chunk)
+
+指定iterator=True 也可以返回一个可迭代对象TextFileReader 
+In [141]: reader = pd.read_table('tmp.sv', sep='|', iterator=True)
+In [142]: reader.get_chunk(5)
+
+reader = pd.read_csv(f, sep=',', iterator=True)
+loop = True
+chunkSize = 100000
+chunks = []
+while loop:
+    try:
+        chunk = reader.get_chunk(chunkSize)
+        chunks.append(chunk)
+    except StopIteration:
+        loop = False
+        print("Iteration is stopped.")
+df = pd.concat(chunks, ignore_index=True)
+或者利用paratext模块(需要SWIG支持)
+加载csv文件
+df = paratext.load_csv_to_pandas("hepatitis.csv")
+
+列迭代器
+paratext.load_csv_as_iterator(filename,expand=True,forget=True)
+#expand关键字强制ParaText使用字符串来表示类别，而不是使用整型
+#forget可以让迭代器去释放已经被解析器访问过的列数据所占据的空间
+
+加载入dict
+dict_frame, levels = paratext.load_csv_to_dict(filename)
+#dict_frame:maps column names to column data
+#levels:contains a list of level strings for each categorical column
+
 
 将数据输出到文本格式
 to_csv(path=None, sep=',', na_rep='', columns=None, header=True, index=True, index_label=None)
@@ -102,3 +109,4 @@ to_csv(path=None, sep=',', na_rep='', columns=None, header=True, index=True, ind
 read_excel(io, sheetname=0, header=0, skiprows=None, index_col=None, names=None, parse_cols=None, date_parser=None, na_values=None)
 写入excel
 to_excel(excel_writer, sheet_name='Sheet1', na_rep='', columns=None, header=True, index=True, index_label=None, startrow=0, startcol=0)
+
