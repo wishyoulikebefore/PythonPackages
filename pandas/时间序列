@@ -1,0 +1,37 @@
+日期和时间数据类型及工具
+
+import datetime
+
+获得年，月，日
+In [2]: now = datetime.datetime.now()
+In [3]: now
+Out[3]: datetime.datetime(2018, 5, 27, 22, 14, 48, 47712)
+In [4]: now.year,now.month,now.day
+Out[4]: (2018, 5, 27)
+
+获得时间差
+In [5]: delta = now- datetime.datetime (2018,5,10)
+In [7]: delta.days
+Out[7]: 17
+
+In [11]: datetime.datetime(2018,5,10)+datetime.timedelta(10)
+Out[11]: datetime.datetime(2018, 5, 20, 0, 0)
+
+字符串和datetime的相互转换
+#datetime转化为字符串
+In [12]: stamp = datetime.datetime(2018,5,10)
+In [13]: str(stamp)
+Out[13]: '2018-05-10 00:00:00'
+
+#字符串转换为日期
+In [14]: value = "2018-05-10"
+In [17]: datetime.datetime.strptime(value,"%Y-%m-%d")
+Out[17]: datetime.datetime(2018, 5, 10, 0, 0)
+
+使用dateutil.parser.parse，可以解析几乎所有的日期表示形式
+In [20]: from dateutil.parser import parse
+In [22]: parse("6/12/2011",dayfirst=True)   
+#国际格式中日会出现在月前：日/月/年，而一般是月/日/年，
+Out[22]: datetime.datetime(2011, 12, 6, 0, 0)
+
+
