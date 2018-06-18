@@ -1,0 +1,32 @@
+PyPrind模块提供了一个进度条和一个百分比指示器对象，允许跟踪循环结构或其他迭代计算的进度。
+典型的应用程序包括处理大数据集，以便在运行时对计算的进展提供直观的估计
+
+prog_bar()：进度条指标
+In [3]: for progress in pyprind.prog_bar(range(20)):
+   ...:     time.sleep(0.2)
+   ...:
+0% [####################] 100% | ETA: 00:00:00
+Total time elapsed: 00:00:04
+
+prog_percent()：百分比指标
+In [4]: for progress in pyprind.prog_percent(range(20)):
+   ...:     time.sleep(0.2)
+   ...:
+[100 %] Time elapsed: 00:00:04 | ETA: 00:00:00
+Total time elapsed: 00:00:04
+
+先进的跟踪
+In [7]: bar = pyprind.ProgBar(30,monitor=True,title="job01")
+In [8]: for i in range(30):
+   ...:     time.sleep(0.5)
+   ...:     bar.update()
+In [9]: print(bar)
+Title: job01
+  Started: 06/18/2018 16:31:09
+  Finished: 06/18/2018 16:31:44
+  Total time elapsed: 00:00:34
+  CPU %: 0.80
+  Memory %: 0.63
+
+更改进度条显示符号
+bar = pyprind.ProgBar(30,monitor=True,title="job01",bar_char="-")  
