@@ -1,0 +1,16 @@
+requests-html自带HTML解析库
+from requests_html import HTMLSession
+
+session = HTMLSession()
+r = session.get('https://www.qiushibaike.com/text/')
+
+获取链接
+links：返回所有链接
+absolute_links：返回所有绝对链接
+
+获取元素
+支持CSS选择器（find）和XPATH两种语法（xpath）
+
+获取属性：attr()
+获取文本：text()
+获取html文本：html()
