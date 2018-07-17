@@ -1,0 +1,7 @@
+glob模块
+用于匹配文件名
+for sh in glob.glob("s%/*.sh" %task)
+
+shlex模块
+为shell语法编写词法分析器
+shlex.split("grep -c success s%" %cmd)
