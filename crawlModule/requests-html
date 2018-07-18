@@ -10,7 +10,17 @@ absolute_links：返回所有绝对链接
 
 获取元素
 支持CSS选择器（find）和XPATH两种语法（xpath）
+-------------------------------------------
+find(selector,clean=False,containing,first,_encoding)
+#clean: 布尔值，如果为真会忽略HTML中style和script标签造成的影响
+#containing: 返回包含该属性文本的标签
+#first: 布尔值，如果为真会返回第一个元素，否则会返回满足条件的元素列表
+-------------------------------------------------
+xpath(selector,clean=False,first,_encoding)
 
 获取属性：attr()
 获取文本：text()
 获取html文本：html()
+
+JavaScript支持
+render()
