@@ -1,0 +1,14 @@
+YAML数据结构可以用类似大纲的缩排方式呈现，结构通过缩进来表示，连续的项目通过减号“-”来表示，map结构里面的key/value对用冒号“:”来分隔
+-
+ name: task_markdup
+ type: sample
+ command:
+  - Picard_MarkDuplicates.sh
+ prerequisite: task_mapping
+ ncpu: 8
+#在缩排中空白字符的数目并不是非常重要，只要相同阶层的元素左侧对齐就可以了
+#在一个档案中，可同时包含多个文件，并用“——”分隔
+
+import yaml
+load：将yaml格式的字符串转换成Python对象 
+dump：将Python对象转换成yaml格式文档
