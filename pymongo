@@ -107,6 +107,7 @@ collection.update_one({'x': 1}, {'$inc': {'x': 3}})
 
 更新多条数据：update_many(filter, update, upsert=False)
 collection.update_many({'x': 1}, {'$inc': {'x': 3}})
+#可以通过collection.update_many({}, {condition})跳过筛选条件
 
 计数：count()
 collection.find({"author": "Mike"}).count()
@@ -123,7 +124,6 @@ collection.find().sort('name', pymongo.ASCENDING).skip(2)
 >>>limit()：指定选取的个数
 collection.find().sort('name', pymongo.ASCENDING).skip(2).limit(2)
 
-
 对数组进行操作
 $all：判断数组属性是否包含全部条件
 collection.find({“data”:{“$all”:[2,3,4]}})
@@ -136,19 +136,19 @@ collection.find({“t”:{“$type”:1}})
 #1：数字，2：字符串，4：array，8：boolean
 
 $each：添加多个元素
-collection.update({“name”:”user2”,
-					{“addToSet”:{“data”:{“$each”:[1,2,3,4]}}}})
+collection.update_many({“name”:”user2”,
+						{“addToSet”:{“data”:{“$each”:[1,2,3,4]}}}})
 
 $push, $pushAll：向数组添加元素
 而$addToSet仅在该元素不存在时才添加
 
 $pop：移除数组属性的元素(数组下标)
-collection.update({“name”:”user2”,{“$pop”:{“data”:1}})
+collection.update_many({“name”:”user2”,{“$pop”:{“data”:1}})
 #1：移除最后一个元素; -1：移除第一个元素
 $pull：按值移除
-collection.update({“name”:”user2”,{“$pull”:{“data”:2}})
+collection.update_many({“name”:”user2”,{“$pull”:{“data”:2}})
 $pullAll：移除所有符合提交的元素
-collection.update({“name”:”user2”,{“$pullAll”:{“data”:[3,5,6]}})
+collection.update_many({“name”:”user2”,{“$pullAll”:{“data”:[3,5,6]}})
 
 
 索引：createIndex()
