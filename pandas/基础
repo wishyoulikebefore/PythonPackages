@@ -229,14 +229,11 @@ four     11
 Ohio        1
 Colorado    5
 Utah        9
-或者使用iloc
+或者使用iloc（使用0开头的行号和列号，而loc使用的实际设置的索引和列名）
 >>> data.iloc[1:3,2:4]
           three  four
 Colorado      6     7
 Utah         10    11
-
-根据行标签和列标签选取或设置值
-get_value    set_value
 
 带有重复值的轴索引
 >>> obj = Series(range(5),index=["a","a","b","b","c"])
