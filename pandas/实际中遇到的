@@ -1,0 +1,9 @@
+1)删除所有值相同的列
+df.ix[:,(df!=df.ix[0]).any()]      df!=df.ix[0]为逐行处理
+引申：删除所有值相同的行（不使用df.T进行行列转换）
+df.ix[df.apply(lambda x:x!=x[0],axis=1).any(axis=1)]
+
+2）删除存在0的列
+df.ix[:,df.all()]
+引申：删除存在0的行
+df.ix[df.all(axis=1)
