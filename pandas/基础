@@ -426,7 +426,7 @@ c    3
 a    3
 b    2
 d    1
-矢量化判断成员资格：isin
+矢量化判断成员资格：isin（或者.str.contains）
 >>> df = pd.DataFrame({'A': [1, 2, 3], 'B': [1, 4, 7]})
 >>> df.isin({'A': [1, 3], 'B': [4, 7, 12]})
        A      B
@@ -444,6 +444,7 @@ In [24]: df["A"][True^df["A"].isin([1])]
 Out[24]: 
 1    2
 2    3
+
 
 处理缺失数据
 dropna(axis=0,how=”any”,thresh=None,inpalce=False)
