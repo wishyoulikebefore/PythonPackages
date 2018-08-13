@@ -436,7 +436,7 @@ d    1
 0   True  False  # Note that B didn't match the 1 here.
 1  False   True
 2   True   True
-去除某一列的特殊值：boolean减法^
+去除某一列的特殊值：boolean减法^（True^等同于~）
 In [23]: df[True^df["A"].isin([1])]
 Out[23]: 
    A  B
