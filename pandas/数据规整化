@@ -8,9 +8,9 @@ merge(left, right, how='inner', on=None, left_on=None, right_on=None,
 
 how : {'left', 'right', 'outer', 'inner'}, default 'inner'
 #outer：并集  inner：交集  left/right：类似于SQL的join
-on：label or list。用于连接的列名，默认为交集
-left_on/right_on：label or list。指定左右DataFrame中用作连接键的列
-left_index：布尔值。将左侧DataFrame的行索引作其连接键
+on：用于连接的列名，默认为交集
+left_on/right_on：指定左右DataFrame中用作连接键的列
+left_index：布尔值
 suffixes：字符串值元组，用于追加到重叠列名的末尾
 
 In [4]: df1 = DataFrame({"key":["b","b","a","c","a","a","b"],"data1":range(7)})
