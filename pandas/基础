@@ -1,6 +1,5 @@
 Pandas 里定义了两种数据类型：Series 和 DataFrame
 
-
 Series：竖起来的List
 默认创建索引为0到N-1的整数型索引
 可以通过values和index属性获取其数组表示形式和索引对象
@@ -24,7 +23,6 @@ Series对象本身及其索引都有一个name属性
 >>>obj4.name = “population”
 >>>obj4.index.name = “state”
 
-
 DataFrame 
 是一种表格型的数据结构，非常接近于电子表格或者类似 mysql 数据库的形式
 既有行索引，又有列索引(index对象不可修改)
@@ -41,21 +39,8 @@ three  2002    Ohio  3.6  NaN
 four   2001  Nevada  2.4  NaN
 five   2002  Nevada  2.9  NaN
 
-
 将列表或数组赋值给某列时，长度必须与DataFrame的长度相匹配；如果赋值的是一个Series，就会精确匹配DataFrame的索引，空位填充NA
->>> val = Series([-1.2,-1.5,-1.7],index=["two","four","five"])
->>> frame["debt"] = val
->>> frame
-       year   state  pop  debt
-one    2000    Ohio  1.5   NaN
-two    2001    Ohio  1.7  -1.2
-three  2002    Ohio  3.6   NaN
-four   2001  Nevada  2.4  -1.5
-five   2002  Nevada  2.9  -1.7
-
 删除列并返回新对象：del frame[]       返回被删除的列：frame.pop()
-
-
 Series和DataFrame的基本功能
 
 调整现有索引：reindex
@@ -89,17 +74,9 @@ a
 
 丢弃指定轴上的项并返回新对象：drop
 #若要在数据源上修改，需添加inplace=True
-对于Series
->>> obj = Series(np.arange(5),index=["a","b","c","d","e"])
->>> obj.drop("c")
-a    0
-b    1
-d    3
-e    4
-对于DataFrame
 >>> data = DataFrame(np.arange(16).reshape((4,4)),
-		 index=["Ohio","Colorado","Utah","New York"],
-		 columns=["one","two","three","four"])
+		 			 index=["Ohio","Colorado","Utah","New York"],
+		 			 columns=["one","two","three","four"])
 >>> data.drop(["Colorado","Ohio"])
 或者data.drop(data.index[:2])
           one  two  three  four
@@ -151,7 +128,6 @@ New York   12   13     14    15     54
 2   a   b     c    d
 3   8   9    10   11
 4  12  13    14   15
--------------------------------------------------------------------------------------------------------------------
 >>> newdata=pd.concat([data[:2],insertRow,data[2:]],ignore_index=True)
 >>> newdata
   one two three four
@@ -160,6 +136,9 @@ New York   12   13     14    15     54
 2   a   b     c    d
 3   8   9    10   11
 4  12  13    14   15
+
+修改列名和索引：rename
+df.rename(index={1:”A”,2:”B”},columns={“区域”:”新区域”})
 
 索引、选取和过滤
 对Series
@@ -221,10 +200,6 @@ Utah         10    11
 False
 如果某个索引对应多个值，则返回一个Series
 
-
-
-
-
 层次化索引
 if-then
 >>> df.loc[df.AAA >= 5,['BBB','CCC']] = 555
@@ -254,19 +229,9 @@ if-then-else
 
 And(&)
 >>> newseries = df.loc[(df['BBB'] < 25) & (df['CCC'] >= -40), 'AAA']
->>> newseries
-0    4
-1	5
 
 Or(|)
 >>> df.loc[(df['BBB'] > 25) | (df['CCC'] >= 75), 'AAA'] = 0.1
->>> df
-   AAA  BBB  CCC
-0  0.1   10  100
-1  5.0   20   50
-2  0.1   30  -30
-3  0.1   40  -50
-
 
 算数运算，数据对齐及填充
 >>> df1 = DataFrame(np.arange(20).reshape(4,5),columns=list("abcde"))
@@ -288,6 +253,9 @@ Or(|)
 3  15.0  16.0  17.0  18.0  19.0
 #add sub div mul
 #利用Series([ ])和value_counts()和加法可用于替代collections.defaultdict(int)
+
+
+
 
 排序和排名
 对行或者索引进行排序：sort_index(axis=0, ascending=True,inplace=False) 
@@ -312,6 +280,7 @@ one    4  5  6  7
        d  a  b  c
 three  0  1  2  3
 one    4  5  6  7
+
 排名：rank(axis=0,mmethod=”average”,ascending=True)
 # method : {'average', 'min', 'max', 'first', 'dense'}
         * average: 相等分组中为各个值平均分配排名
@@ -345,16 +314,15 @@ count()：非NA值的数量
 min max
 argmin argmax：获取最大值或最小值得索引位置
 idxmin idxmax：获取最大值或最小值的索引值
-sum(axis=0)  mean(axis=0,skipna=True)
+sum(axis=0)：使用numeric_only=True跳过非数值
+mean(axis=0,skipna=True)
 var std
 cumsum cumin cummax cumprod
+nlargest：获取最大的数行    df.nlargest(5,”人员数量”)
 diff：计算一阶差分，对时间序列很有用
 describe()：
 对数值型数据：count mean min std max和等分位数
 对非数值型数据：count unique top freq
-
-
-
 
 唯一值、值计数及成员资格
 对Series
@@ -368,6 +336,7 @@ c    3
 a    3
 b    2
 d    1
+#添加参数normalize=True可以得到计数占比
 
 矢量化判断成员资格：isin（或者.str.contains）
 >>> df = pd.DataFrame({'A': [1, 2, 3], 'B': [1, 4, 7]})
@@ -431,6 +400,7 @@ notnull()
 4  0.271405  0.500000  0.172731
 5  1.760492  2.199585  0.002332
 6 -0.322384  0.010941  0.956640
+
 
 date_range(start=None,end=None,periods=None)
 >>> pd.date_range("20130101",periods=6)
