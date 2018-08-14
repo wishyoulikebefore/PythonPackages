@@ -57,9 +57,10 @@ five   2002  Nevada  2.9  -1.7
 
 
 Series和DataFrame的基本功能
-重新索引：reindex（如果某个索引值当前不存在，就引入缺失值）
+
+调整现有索引：reindex
 >>> obj = Series([4.5,7.2,-5.3,3.6],index=["d","b","a","c"])
->>> obj.reindex(["a","b","c","d","e"],fill_value=0)
+>>> obj.reindex(["a","b","c","d","e"],fill_value=0)            #fill_value填充空值
 a   -5.3
 b    7.2
 c    3.6
@@ -74,7 +75,17 @@ e    0.0
 3    purple
 4    yellow
 5    yellow
-使用columns关键字即可重新索引列
+#使用columns重新索引列，使用index重新索引行
+--------------------------------------------------------------------------
+将现有的某列设为索引：set_index
+In [20]: frame = DataFrame(np.arange(8).reshape(2,4),index=["three","one"],
+    ...:           columns=list("dabc"))
+In [22]: frame.set_index("a")
+Out[22]:
+   d  b  c
+a
+1  0  2  3
+5  4  6  7
 
 丢弃指定轴上的项并返回新对象：drop
 #若要在数据源上修改，需添加inplace=True
@@ -420,18 +431,6 @@ notnull()
 4  0.271405  0.500000  0.172731
 5  1.760492  2.199585  0.002332
 6 -0.322384  0.010941  0.956640
-
-将DataFrame的一个或多个列当作行索引使用：set_index
-In [20]: frame = DataFrame(np.arange(8).reshape(2,4),index=["three","one"],
-    ...:           columns=list("dabc"))
-In [22]: frame.set_index("a")
-Out[22]:
-   d  b  c
-a
-1  0  2  3
-5  4  6  7
-
-
 
 date_range(start=None,end=None,periods=None)
 >>> pd.date_range("20130101",periods=6)
