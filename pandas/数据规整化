@@ -2,16 +2,16 @@
 merge：根据一个或多个键将不同DataFrame中的行连接起来
 concat：沿着一条轴将多个对象堆叠到一起
 
-数据库风格的DataFrame合并
-merge(left, right, how='inner', on=None, left_on=None, right_on=None, 
-      left_index=False, right_index=False, sort=False, suffixes=('_x', '_y'), copy=True, indicator=False)
+DataFrame合并
+merge(left, right, how='inner', on=None, left_on=None, right_on=None, left_index=False, right_index=False, sort=False, suffixes=('_x', '_y'), copy=True, indicator=False)
 
 how : {'left', 'right', 'outer', 'inner'}, default 'inner'
-#outer：并集  inner：交集  left/right：类似于SQL的join
+#outer：并集     inner：交集     left/right：类似于SQL的join
 on：用于连接的列名，默认为交集
 left_on/right_on：指定左右DataFrame中用作连接键的列
-left_index：布尔值
-suffixes：字符串值元组，用于追加到重叠列名的末尾
+left_index/right_index：布尔值
+suffixes：用于追加到重叠列名的末尾
+indicator=True：可以注明每行数据的来源
 
 In [4]: df1 = DataFrame({"key":["b","b","a","c","a","a","b"],"data1":range(7)})
 In [5]: df2 = DataFrame({"key":["a","b","d"],"data2":range(3)})
@@ -49,6 +49,10 @@ Out[11]:
 3      2    a      0    a
 4      4    a      0    a
 5      5    a      0    a
+
+
+
+
 
 多对多的合并：产生行的笛卡尔集
 In [12]: df1 = DataFrame({"key":["b","b","a","c","a","b"],"data1":range(6)})
@@ -107,6 +111,8 @@ c   3.0     4.0       9.0     10.0
 d   NaN     NaN      11.0     12.0
 e   5.0     6.0      13.0     14.0
 
+
+
 向join传入一组DataFrame
 In [25]: another = DataFrame([[7,8],[9,10],[11,12],[16,17]],index=["a","c","e","f"],columns=["New York","Oregon"])
 In [26]: left2.join([right2,another])
@@ -117,7 +123,7 @@ c     3       4       9.0     10.0         9      10
 e     5       6      13.0     14.0        11      12
 
 轴向连接
-对于numpy数组：concatenate
+numpy：concatenate
 In [27]: arr = np.arange(12).reshape(4,3)
 In [28]: np.concatenate([arr,arr],axis=1)
 Out[28]: 
@@ -126,91 +132,24 @@ array([[ 0,  1,  2,  0,  1,  2],
        [ 6,  7,  8,  6,  7,  8],
 [ 9, 10, 11,  9, 10, 11]])
 
-对于pandas对象：concat函数
+pandas：concat函数
 concat(objs, axis=0, join='outer', join_axes=None, ignore_index=False, keys=None, levels=None, names=None, verify_integrity=False, copy=True)
 
 join : {'inner', 'outer'}, default 'outer'
-join_axes：list of Index objects。指明使用的索引
-keys：与连接对象有关的值，形成层次化索引；应用于axis=1，成为列头
+join_axes：指明使用的索引
+keys：列表，注明合并后数组来源
 names：用于创建分层级别的名称
-ignore_index：不保留连接轴上的索引，产生一组新索引
+ignore_index=True：不保留连接轴上的索引，产生一组新索引
 
-In [31]: s1 = Series([0,1],index=["a","b"])
-In [32]: s2 = Series([2,3,4],index=["c","d","e"])
-In [33]: s3 = Series([5,6],index=["f","g"])
-In [34]: pd.concat([s1,s2,s3])
-Out[34]: 
+>>>s1 = Series([0,1],index=["a","b"])
+>>>s2 = Series([2,3,4],index=["c","d","e"])
+>>>pd.concat([s1,s2])
 a    0
 b    1
 c    2
 d    3
 e    4
-f    5
-g    6
-#concat默认在axis=0上工作，产生一个新的Series；如果传入axis=1，变成一个DataFrame（列数为传入obj的长度）
-
-In [35]: pd.concat([s1,s2,s3],axis=1)
-Out[35]: 
-     0    1    2
-a  0.0  NaN  NaN
-b  1.0  NaN  NaN
-c  NaN  2.0  NaN
-d  NaN  3.0  NaN
-e  NaN  4.0  NaN
-f  NaN  NaN  5.0
-g  NaN  NaN  6.0
-
-通过join_axes指定其他轴上使用的索引
-In [29]: pd.concat([s1,s4],axis=1,join_axes=[["a","c","b","e"]])
-Out[29]:
-     0    1
-a  0.0  0.0
-c  NaN  NaN
-b  1.0  5.0
-e  NaN  NaN
- 
-创建层次化索引
-In [30]: pd.concat([s1,s2,s3],keys=["one","two","three"])
-Out[30]:
-one    a    0
-       b    1
-two    c    2
-       d    3
-       e    4
-three  f    5
-       g    6
-dtype: int64
-
-In [42]: pd.concat([s1,s2,s3],keys=["one","two","three"],axis=1)
-Out[42]: 
-   one  two  three
-a  0.0  NaN    NaN
-b  1.0  NaN    NaN
-c  NaN  2.0    NaN
-d  NaN  3.0    NaN
-e  NaN  4.0    NaN
-f  NaN  NaN    5.0
-g  NaN  NaN    6.0
-
-#对DataFrame同理
-In [43]: df1 = DataFrame(np.arange(6).reshape(3,2),index=["a","b","c"],columns=["one","two"])
-In [44]: df2 = DataFrame(5+np.arange(4).reshape(2,2),index=["a","c"],columns=["three","four"])
-In [45]: pd.concat([df1,df2],axis=1,keys=["level1","level2"])
-Out[45]: 
-  level1     level2     
-     one two  three four
-a      0   1    5.0  6.0
-b      2   3    NaN  NaN
-c      4   5    7.0  8.0
-
-添加层次化索引参数
-In [48]: pd.concat([df1,df2],axis=1,keys=["level1","level2"],names=["upper","lower"])
-Out[48]: 
-upper level1     level2     
-lower    one two  three four
-a          0   1    5.0  6.0
-b          2   3    NaN  NaN
-c          4   5    7.0  8.0
+通过axis=1进行横向合并
 
 合并重叠数据
 基于np.where
@@ -226,39 +165,7 @@ Out[54]:
 重塑层次化索引
 stack：列转行
 unstack：行转列
-
-In [14]: data = DataFrame(np.arange(6).reshape(2,3),
-    ...: index=pd.Index(["Ohio","Colorado"],name="state"),
-    ...: columns=pd.Index(["one","two","three"],name="number"))
-
-In [15]: data
-Out[15]:
-number    one  two  three
-state
-Ohio        0    1      2
-Colorado    3    4      5
-
-In [16]: data.stack()
-Out[16]:
-state     number
-Ohio      one       0
-          two       1
-          three     2
-Colorado  one       3
-          two       4
-          three     5
-dtype: int32
-
-In [17]: data.unstack()
-Out[17]:
-number  state
-one     Ohio        0
-        Colorado    3
-two     Ohio        1
-        Colorado    4
-three   Ohio        2
-        Colorado    5
-dtype: int32
+ 
 #默认情况下，unstack操作的是最内层
 
 pivot(index=None, columns=None, values=None)
@@ -273,6 +180,7 @@ bar  A  B  C
 foo         
 one  1  2  3
 two  4  5  6
+注：pivot相当于：set_index创建层次化索引，再用unstack重塑
 
 透视表：pivot_table()
 #根据一个或多个键对数据进行聚合，并根据行和列上的分组键将数据分配到各个矩形区域
@@ -287,92 +195,23 @@ Out[17]:
 3       23.68  3.31    Male     No  Sun  Dinner     2
 4       24.59  3.61  Female     No  Sun  Dinner     4
 
-In [33]: tips.pivot_table(["tip","size"],index=["sex","day"],columns="smoker")
-Out[33]:
-                 size                 tip
-smoker             No       Yes        No       Yes
-sex    day
-Female Fri   2.500000  2.000000  3.125000  2.682857
-       Sat   2.307692  2.200000  2.724615  2.868667
-       Sun   3.071429  2.500000  3.329286  3.500000
-       Thur  2.480000  2.428571  2.459600  2.990000
-Male   Fri   2.000000  2.125000  2.500000  2.741250
-       Sat   2.656250  2.629630  3.256563  2.879259
-       Sun   2.883721  2.600000  3.115349  3.521333
-       Thur  2.500000  2.300000  2.941500  3.058000
+In [20]: tips.pivot_table(["tip","size"],index=["sex","day"],columns="smoker")
  
 #传入margins=True添加行和列的小计和总计
-In [34]: tips.pivot_table(["tip","size"],index=["sex","day"],columns="smoker",margins=True)
-Out[34]:
-                 size                           tip
-smoker             No       Yes       All        No       Yes       All
-sex    day
-Female Fri   2.500000  2.000000  2.111111  3.125000  2.682857  2.781111
-       Sat   2.307692  2.200000  2.250000  2.724615  2.868667  2.801786
-       Sun   3.071429  2.500000  2.944444  3.329286  3.500000  3.367222
-       Thur  2.480000  2.428571  2.468750  2.459600  2.990000  2.575625
-Male   Fri   2.000000  2.125000  2.100000  2.500000  2.741250  2.693000
-       Sat   2.656250  2.629630  2.644068  3.256563  2.879259  3.083898
-       Sun   2.883721  2.600000  2.810345  3.115349  3.521333  3.220345
-       Thur  2.500000  2.300000  2.433333  2.941500  3.058000  2.980333
-All          2.668874  2.408602  2.569672  2.991854  3.008710  2.998279
+In [21]: tips.pivot_table(["tip","size"],index=["sex","day"],columns="smoker",margins=True)
  
 #传入其它函数
-In [35]: tips.pivot_table("tip",index=["sex","day"],columns="smoker",aggfunc="count",margins=True)
-Out[35]:
-smoker        No  Yes  All
-sex    day
-Female Fri     2    7    9
-       Sat    13   15   28
-       Sun    14    4   18
-       Thur   25    7   32
-Male   Fri     2    8   10
-       Sat    32   27   59
-       Sun    43   15   58
-       Thur   20   10   30
-All          151   93  244
+In [25]: tips.pivot_table("tip",index=["sex","day"],columns="smoker",aggfunc="count",margins=True)
  
+
 melt(frame, id_vars=None, value_vars=None, var_name=None, value_name='value', col_level=None)
 #逆透视
-In [26]: df = pd.DataFrame({'A': {0: 'a', 1: 'b', 2: 'c'},
-    ...:                     'B': {0: 1, 1: 3, 2: 5},
-    ...:                     'C': {0: 2, 1: 4, 2: 6}})
-    ...:
-
-In [27]: pd.melt(df, id_vars=['A'], value_vars=['B', 'C'])
-Out[27]:
-   A variable  value
-0  a        B      1
-1  b        B      3
-2  c        B      5
-3  a        C      2
-4  b        C      4
-5  c        C      6
-
-In [28]: pd.melt(df, id_vars=['A'], value_vars=['B'],
-    ...:         var_name='myVarname', value_name='myValname')
-    ...:
-Out[28]:
-   A myVarname  myValname
-0  a         B          1
-1  b         B          3
-2  c         B          5 
-
+ 
 交叉表：crosstab
 #计算分组频率的特殊透视表
 crosstab(index, columns, values=None, rownames=None, colnames=None, aggfunc=None, margins=False, margins_name='All', dropna=True, normalize=False)
 
-In [36]: pd.crosstab([tips.time,tips.day],tips.smoker,margins=True)
-Out[36]:
-smoker        No  Yes  All
-time   day
-Dinner Fri     3    9   12
-       Sat    45   42   87
-       Sun    57   19   76
-       Thur    1    0    1
-Lunch  Fri     1    6    7
-       Thur   44   17   61
-All          151   93  244
+In [30]: pd.crosstab([tips.time,tips.day],tips.smoker,margins=True)
  
 #也可以使用pivot_table，但是不如crosstab方便
 
@@ -394,46 +233,6 @@ Out[41]:
     k1  k2
 0  one   1
 3  two   3
-
-利用函数或映射进行数据转换
-基于Series的map
-In [42]: data = DataFrame({"food":["bacon","pulled pork","bacon","Pastrami","corned beef","Bacon","pastrami","honey ham","nova lox"],
-...: "ounces":[4,3,12,6,7.5,8,3,5,6]})
-In [44]: meat2animal = {"bacon":"pig","pulled pork":"pig","pastrami":"cow","corned beef":"cow","honey ham":"pig","nova lox":"salmon"}
-In [45]: data["animal"] = data["food"].map(str.lower).map(meat2animal)
-或者
-In [48]: data["food"].map(lambda x: meat2animal[x.lower()])
-Out[48]: 
-0       pig
-1       pig
-2       pig
-3       cow
-4       cow
-5       pig
-6       cow
-7       pig
-8    salmon
-
-替换值
-data.replace([-999,-1000],np.nan)
-data.replace([-999,-1000],[np.nan,0])
-
-重命名轴索引
-利用rename
-In [49]: data = DataFrame(np.arange(12).reshape(3,4),index=["Ohio","Colorado","New York"],columns=["one","two","three","four"])
-In [51]: data.rename(index=str.title,columns=str.upper)
-Out[51]: 
-          ONE  TWO  THREE  FOUR
-Ohio        0    1      2     3
-Colorado    4    5      6     7
-New York    8    9     10    11
-rename结合字典型对象实现对部分轴标签的更新
-In [52]: data.rename(index={"Ohio":"Indiana"},columns={"three":"peekaboo"})
-Out[52]: 
-          one  two  peekaboo  four
-Indiana     0    1         2     3
-Colorado    4    5         6     7
-New York    8    9        10    11
 
 离散化和面元划分
 将人员数据划分为不同年龄组
