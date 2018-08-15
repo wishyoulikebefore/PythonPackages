@@ -345,8 +345,8 @@ d    1
 0   True  False  
 1  False   True
 2   True   True
-去除某一列的特殊值：boolean减法^（True^等同于~）
-In [23]: df[True^df["A"].isin([1])]
+去除某一列的特殊值：boolean减法^（或者使用~，为翻转运算，将二进制的0和1互换）
+In [23]: df[True^df["A"].isin([1])]                   #df[~df["A"].isin([1])]
 Out[23]: 
    A  B
 1  2  4
