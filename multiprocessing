@@ -1,36 +1,16 @@
 multiprocessing
 
 Process
-Process([group [, target [, name [, args [, kwargs]]]]])
-#target表示调用对象，你可以传入方法的名字
-#args表示被调用对象的位置参数元组 ,单个参数是（m,）
-#kwargs表示调用对象的字典 
-#name是别名，相当于给这个进程取一个名字
-#group分组，实际上不使用
+Process(target [, name [, args [, kwargs]]])
+#target：调用函数名
+#args：调用函数参数元组，单个参数是（m,）
+#kwargs：调用对象的字典 
+#name：别名，相当于给这个进程取名
 
 cpu.count()
 #获取当前机器的 CPU 核心数量
 active_children()
 #获取目前所有的运行的进程
-
-继承Process类
-from multiprocessing import Process
-import time
-
-class MyProcess(Process):
-    def __init__(self, loop):
-        Process.__init__(self)
-        self.loop = loop
-
-    def run(self):
-        for count in range(self.loop):
-            time.sleep(1)
-            print('Pid: ' + str(self.pid) + ' LoopCount: ' + str(count))
-
-if __name__ == '__main__':
-    for i in range(2, 5):
-        p = MyProcess(i)
-        p.start()
 
 start()
 #启动多个进程
@@ -148,76 +128,31 @@ Pool
 #进程池
 分为阻塞和非阻塞两种方式:非阻塞(Pool().apply_async())即为添加进程后，不一定非要等到改进程执行完就添加其他进程运行，阻塞(Pool().apply())则相反。
 
-
-
 阻塞
 from multiprocessing import Pool
-import time
-
-def fun(x):
-    print(x)
-    time.sleep(1)
 
 pool=Pool(processes=5)
 start=time.time()
 for i in range(10):
     pool.apply(fun,(i,))
-
 pool.close()
 pool.join()
-end=time.time()
-print(end-start)
-
-输出结果：
-0
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10.056557178497314
 
 非阻塞
 from multiprocessing import Pool
-import time
-
-def fun(x):
-    print(x)
-    time.sleep(1)
 
 pool=Pool(processes=5)
 start=time.time()
 for i in range(10):
     pool.apply_async(fun,(i,))
-
 pool.close()
 pool.join()
-end=time.time()
-print(end-start)
-
-输出结果
-0
-1
-2
-3
-4
-5
-6
-7
-8
-9
-2.0517051219940186
 
 批量处理还可以使用Pool().map(func,[])
 pool=Pool(processes=5)
 pool.map(fun,range(10))
 
-
-多进程写入同一文件，需要使用multiprocessing库的回调函数功能。
+多进程写入同一文件，需要使用multiprocessing库的回调函数（callback）
 #把进程需要写入文件的内容作为返回值返回给回调函数，使用回调函数向文件中写入内容
 
 def mycallback(x):
@@ -230,4 +165,4 @@ if __name__=="__main__":
         pool.close()
         pool.join()
 
-
+在多进程中使用装饰器时，由于装饰器修饰后的函数会丢失原有函数名，导致不可pickle，需要配合functools.wraps使用。
