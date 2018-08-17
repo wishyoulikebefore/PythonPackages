@@ -218,6 +218,9 @@ In [30]: pd.crosstab([tips.time,tips.day],tips.smoker,margins=True)
 数据转化
 移除重复数据
 利用duplicated()返回布尔型Series
+#筛选出非重复行：df[df.duplicated(["first_name","last_name"])==False]
+#keep='last'可以让系统从后向前开始筛查，索引小的重复行会返回 'True'
+
 利用drop_duplicates()
 In [36]: data = DataFrame({"k1":["one"]*3+["two"]*4,"k2":[1,1,2,3,3,4,4]})
 In [40]: data.drop_duplicates()
@@ -228,7 +231,7 @@ Out[40]:
 3  two   3
 5  two   4
 指定部分列进行判断，保留第一个出现的值组合
-In [41]: data.drop_duplicates(["k1"])
+In [41]: data.drop_duplicates(["k1"],inplace=True)
 Out[41]: 
     k1  k2
 0  one   1
