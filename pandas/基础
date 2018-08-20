@@ -43,7 +43,7 @@ five   2002  Nevada  2.9  NaN
 删除列并返回新对象：del frame[]       返回被删除的列：frame.pop()
 Series和DataFrame的基本功能
 
-调整现有索引：reindex
+调整现有索引：reindex(之前的index列会消失)
 >>> obj = Series([4.5,7.2,-5.3,3.6],index=["d","b","a","c"])
 >>> obj.reindex(["a","b","c","d","e"],fill_value=0)            #fill_value填充空值
 a   -5.3
