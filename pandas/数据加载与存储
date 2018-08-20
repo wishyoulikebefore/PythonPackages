@@ -106,6 +106,7 @@ to_csv(path=None, sep=',', na_rep='', columns=None, header=True, index=True, ind
 #header：布尔值或字符串列表，default=True，输出列名
 
 读取Excel文件（需要xlrd和openpyxl）
+#便于从单个excel文件中读取或输出多个表格
 读取excel
 read_excel(io, sheetname=0, header=0, skiprows=None, index_col=None, names=None, parse_cols=None, date_parser=None, na_values=None)
 写入excel
