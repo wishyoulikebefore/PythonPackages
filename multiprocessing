@@ -85,6 +85,7 @@ Producer put  0.722859424381
 Producer put  0.525321338921
 Consumer get 0.722859424381
 Consumer get 0.525321338921
+
 Pipe(管道)
 #默认双向；mutiprocessing.Pipe(duplex=False)创建单向管道
 
