@@ -104,6 +104,7 @@ dict_frame, levels = paratext.load_csv_to_dict(filename)
 将数据输出到文本格式
 to_csv(path=None, sep=',', na_rep='', columns=None, header=True, index=True, index_label=None)
 #header：布尔值或字符串列表，default=True，输出列名
+#mode="a"实现不覆盖输出
 
 读取Excel文件（需要xlrd和openpyxl）
 #便于从单个excel文件中读取或输出多个表格
