@@ -2,7 +2,7 @@ import pandas as pd
 import time
 import glob
 import multiprocessing
-from functools import wraps
+from functools import wraps,partial
 
 """
 处理数据背景：甲基化样本共200+，每个文件10亿+行，需要从中挑出在甲基化芯片中50万+条序列中的位点（每条序列50bp长）
@@ -11,6 +11,8 @@ from functools import wraps
           2）judge()函数中的搜索优化：终止+位点列表的删减（已检出位点之前所有位点的删除，避免无效搜索）
           3）输出每个样本每条染色体的运行时间和总运行时间
           4）多进程处理，加快速度（注意decorator的坑）
+
+优化问题：每个样本都需要传入chr_locDict，避免删减互相影响，可以使用functools.partial冻起来
 """
 
 def process_chip():
@@ -43,7 +45,8 @@ def timer(func):
     return wrapper
 
 @timer
-def process_sample(CX_file):
+def process_sample(chr_locDict,CX_file):
+    copyDict = chr_locDict
     print("%s开始处理" % (CX_file))
     sample_name = CX_file.replace(".*", "")
     output = open(sample_name + ".CX_filtered.txt", "a")
@@ -57,12 +60,12 @@ def process_sample(CX_file):
             if "_" in _chr or _chr == "chrM":
                 continue
             if monitor(last_chr,_chr):
-                print("%s的%s处理共耗时%s秒" %(sample_name,last_chr,time.time()-chr_process_time))
+                print("%s的%s处理共耗时%s" %(sample_name,last_chr,time.time()-chr_process_time))
                 chr_process_time = time.time()
                 last_chr = _chr
             else:
                 pass
-            this_judge = judge(_chr, loc)
+            this_judge = judge(_chr, loc,copyDict)
             if this_judge:
                 output.write(line)
                 copyDict = this_judge
@@ -74,12 +77,13 @@ def process_sample(CX_file):
 
 #输出各chr的处理时间
 def monitor(last_chr,now_chr):
-    if not last_chr and last_chr != now_chr:
+    if last_chr != now_chr:
         return 1
     else:
         return
 
-def judge(_chr,loc):
+#出于速度优化，每个样本都要根据处理位点的情况对chr_locDict进行不断删减，因此每个样本应该传入原始chr_locDict，避免影响后续
+def judge(_chr,loc,chr_locDict):
     chip_loc = chr_locDict[_chr]
     loc = int(loc)
     for nu,loci in enumerate(chip_loc):
@@ -93,12 +97,11 @@ def judge(_chr,loc):
         else:
             pass
 
-chr_locDict = process_chip()
-
 if __name__ == "__main__":
     pool = multiprocessing.Pool(processes=24)
+    chr_locDict = process_chip()
+    process_sample_partial = partial(process_sample,chr_locDict)
     for CX_file in glob.glob("*txt"):
-        pool.apply_async(process_sample,args=(CX_file,))
+        pool.apply_async(process_sample_partial,args=(CX_file,))
     pool.close()
     pool.join()
-
