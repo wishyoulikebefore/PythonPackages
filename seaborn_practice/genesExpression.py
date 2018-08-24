@@ -37,9 +37,7 @@ def expression_heatmap(geneList,barcodeDict):
         UMI_countList.append(UMI_sum)
     UMIs = pd.DataFrame(UMI_countList,index=barcodeDict.keys(),columns=geneList)
     f, ax = plt.subplots(figsize=(20,12))
-    ax.set_title("8个基因在10个簇中表达量的热力图")
-    ax.set_xlabel("genes",fontsize=10)
-    ax.set_ylabel("表达量(log2)",fontsize=10)
+    ax.set_title("heatmap of gene expression")
     sns.heatmap(UMIs,annot=True,cmap="BuPu",linewidths=0.5)
     f.savefig('heatmap.png',dpi=100, bbox_inches='tight')   #保存的图片不会出现部分内容显示不全的现象
 
