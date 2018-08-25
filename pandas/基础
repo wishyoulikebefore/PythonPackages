@@ -358,7 +358,7 @@ Out[24]:
 2    3
 
 处理缺失数据
-dropna(axis=0,how=”any”,thresh=None,inpalce=False)
+dropna(axis=0,how=”any”,thresh=None,inpalce=False)      #默认按行处理，此处axis和其它地方不太一样
 #how : {'any', 'all'}
 #thresh：int，指定非NA数目
 #inplace=true：就地修改
