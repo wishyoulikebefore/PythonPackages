@@ -12,3 +12,6 @@ df.ix[df.all(axis=1)
 df['柜台名称'].str.split('-',expand=True) 
 df["订单号"].str[:4]
 df["订单号"].extract("(\d+)")
+
+4）解决console显示值省略
+pd.set_option('display.max_colwidth',1000)
