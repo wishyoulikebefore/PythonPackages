@@ -22,13 +22,13 @@ post = { '标题': self.title,
 }
 
 
-$set：替换某个field的值     { $set: { <field1>: <value1>, ... } }
-$unset：取消某个field       { $unset: { <field1>: "", ... } }
+$set：替换某个field的值     {$set: { <field1>: <value1>, ... }}
+$unset：取消某个field       {$unset: { <field1>: "", ... }}
 $addToSet：插入值至array
 $inc：+1
 $mul：乘
 $rename：重命名     		 {$rename: { <field1>: <newName1>, ... } }
-$min：指定值比存在值小则更新
+$min：指定值比存在值小则更新    ({"gene":gene},{"$set":{"chr":chr},"$min":{"start":start},"$max":{"end":end}},upsert=True)
 $max
 $currentDate：将某field值设定为日期（”$currentDate”:{lastModified:true}）
 
