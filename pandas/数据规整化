@@ -15,31 +15,12 @@ suffixes：用于追加到重叠列名的末尾
 indicator=True：可以注明每行数据的来源
 --------------------------------------------------------------------
 
-In [8]: pd.merge(df1,df2,on="key",how="outer")     #取键的并集
-Out[8]: 
-   data1 key  data2
-0    0.0   b    1.0
-1    1.0   b    1.0
-2    6.0   b    1.0
-3    2.0   a    0.0
-4    4.0   a    0.0
-5    5.0   a    0.0
-6    3.0   c    NaN
-7    NaN   d    2.0
-
+取键的交集
+>>> pd.merge(df1,df2,on="key")                
+取键的并集
+>>> pd.merge(df1,df2,on="key",how="outer")     
 对象列名不同，进行指定
-In [9]: df1 = DataFrame({"lkey":["b","b","a","c","a","a","b"],"data1":range(7)})
-In [10]: df2 = DataFrame({"rkey":["a","b","d"],"data2":range(3)})
-In [11]: pd.merge(df1,df2,left_on="lkey",right_on="rkey")
-Out[11]: 
-   data1 lkey  data2 rkey
-0      0    b      1    b
-1      1    b      1    b
-2      6    b      1    b
-3      2    a      0    a
-4      4    a      0    a
-5      5    a      0    a
-
+>>> pd.merge(df1,df2,left_on="lkey",right_on="rkey")
 
 多对多的合并：产生行的笛卡尔集
 In [12]: df1 = DataFrame({"key":["b","b","a","c","a","b"],"data1":range(6)})
@@ -61,53 +42,13 @@ Out[14]:
 
 索引上的合并
 利用left_index=True或者right_index=True
-In [16]: left1 = DataFrame({"key":["a","b","a","a","b","c"],"value":range(6)})
-In [17]: right1 = DataFrame({"group_val":[3.5,7]},index=["a","b"])
-In [18]: pd.merge(left1,right1,left_on="key",right_index=True)
-Out[18]: 
-  key  value  group_val
-0   a      0        3.5
-2   a      2        3.5
-3   a      3        3.5
-1   b      1        7.0
-4   b      4        7.0
-
-对于层次化索引，需要以列表的形式指明用作合并键的多个列
-
+>>> pd.merge(left1,right1,left_on="key",right_index=True)
 同时合并双方的索引
-In [19]: left2 = DataFrame([[1,2],[3,4],[5,6]],index=["a","c","e"],columns=["Ohio","Nevada"])
-In [20]: right2 = DataFrame([[7,8],[9,10],[11,12],[13,14]],
-    ...: index=["b","c","d","e"],columns=["Missouri","Alabama"])
-In [21]: pd.merge(left2,right2,how="outer",left_index=True,right_index=True)
-Out[21]: 
-   Ohio  Nevada  Missouri  Alabama
-a   1.0     2.0       NaN      NaN
-b   NaN     NaN       7.0      8.0
-c   3.0     4.0       9.0     10.0
-d   NaN     NaN      11.0     12.0
-e   5.0     6.0      13.0     14.0
+>>> pd.merge(left2,right2,how="outer",left_index=True,right_index=True)
 
-或使用join(other, on=None, how='left', lsuffix='', rsuffix='', sort=False)
+使用join(other, on=None, how='left', lsuffix='', rsuffix='', sort=False)
 #默认索引合并，当左右列名有重复时，需用lsuffix和rsuffix指定
-In [24]: left2.join(right2)
-Out[24]: 
-   Ohio  Nevada  Missouri  Alabama
-a   1.0     2.0       NaN      NaN
-b   NaN     NaN       7.0      8.0
-c   3.0     4.0       9.0     10.0
-d   NaN     NaN      11.0     12.0
-e   5.0     6.0      13.0     14.0
-
-
-
-向join传入一组DataFrame
-In [25]: another = DataFrame([[7,8],[9,10],[11,12],[16,17]],index=["a","c","e","f"],columns=["New York","Oregon"])
-In [26]: left2.join([right2,another])
-Out[26]: 
-   Ohio  Nevada  Missouri  Alabama  New York  Oregon
-a     1       2       NaN      NaN         7       8
-c     3       4       9.0     10.0         9      10
-e     5       6      13.0     14.0        11      12
+>>> left2.join(right2)
 
 轴向连接
 numpy：concatenate
@@ -121,13 +62,13 @@ array([[ 0,  1,  2,  0,  1,  2],
 
 pandas：concat函数
 concat(objs, axis=0, join='outer', join_axes=None, ignore_index=False, keys=None, levels=None, names=None, verify_integrity=False, copy=True)
-
+-----------------------------------------------------------
 join : {'inner', 'outer'}, default 'outer'
 join_axes：指明使用的索引
 keys：列表，注明合并后数组来源
 names：用于创建分层级别的名称
 ignore_index=True：不保留连接轴上的索引，产生一组新索引
-
+-----------------------------------------------------------
 >>>s1 = Series([0,1],index=["a","b"])
 >>>s2 = Series([2,3,4],index=["c","d","e"])
 >>>pd.concat([s1,s2])
@@ -136,7 +77,7 @@ b    1
 c    2
 d    3
 e    4
-通过axis=1进行横向合并
+#通过axis=1进行横向合并
 
 合并重叠数据
 基于np.where
