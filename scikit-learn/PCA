@@ -3,7 +3,7 @@ PCA（principal component analysis）：主成分分析
 
 sklearn.decomposition.PCA(n_components=None, copy=True, whiten=False, svd_solver=’auto’, tol=0.0, iterated_power=’auto’, random_state=None)
 -------------------------------------------------------------------------------
->>>参数
+>>> 参数
 n_components : 保留component的数目
 copy : 默认为True，保留原始数据
 whiten : （白化）默认为False
@@ -21,3 +21,14 @@ mean_ : array, shape (n_features,)
 n_components_ : int
 noise_variance_ : float 预估的噪音协方差
 --------------------------------------------------------------------------------
+>>> 方法
+fit(X[, y])	Fit the model with X.
+fit_transform(X[, y])	Fit the model with X and apply the dimensionality reduction on X.
+get_covariance()	Compute data covariance with the generative model.
+get_params([deep])	Get parameters for this estimator.
+get_precision()	Compute data precision matrix with the generative model.
+inverse_transform(X)	Transform data back to its original space.
+score(X[, y])	Return the average log-likelihood of all samples.
+score_samples(X)	Return the log-likelihood of each sample.
+set_params(**params)	Set the parameters of this estimator.
+transform(X)	Apply dimensionality reduction to X.
