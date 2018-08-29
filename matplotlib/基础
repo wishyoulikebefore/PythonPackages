@@ -1,0 +1,459 @@
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import matplotlib.image as mpimg
+import matplotlib.gridspec as gridspec
+
+默认设置
+mpl.rcParams 或mpl.rc
+#mpl.rc(“lines”,linewidth=2,color=”r”)
+#mpl.rcParams[’lines.linewidth’] = 2     mpl.rcParams[’lines.color’] = ’r’
+LINES
+lines.linewidth
+lines.color
+PATCHES
+patch.linewidth 
+patch.facecolor 
+patch.edgecolor
+FONT
+font.weight
+font.size
+font.sans-herif       #选择'SimHei' 正常显示中文标签
+AXES
+axes.facecolor 
+axes.edgecolor 
+axes.linewidth 
+axes.titlesize 
+axes.labelsize： fontsize of the x any y labels
+axes.labelcolor
+TICKS
+xtick.major.size 
+xtick.minor.size 
+xtick.major.width 
+xtick.minor.width 
+xtick.color 
+xtick.labelsize
+xtick.direction : in, out, or inout
+GRIDS
+grid.color 
+grid.linestyle 
+grid.linewidth 
+grid.alpha 
+Legend
+legend.fontsize 
+FIGURE
+figure.figsize : 8, 6 
+figure.facecolor 
+figure.edgecolor 
+figure.subplot.left : 0.125 
+figure.subplot.right : 0.9 
+figure.subplot.bottom : 0.1 
+figure.subplot.top : 0.9 
+figure.subplot.wspace : 0.2 
+figure.subplot.hspace : 0.2 
+SAVING FIGURES
+savefig.dpi : 100 
+savefig.facecolor 
+savefig.edgecolor 
+
+坐标
+plt.axis([xmin, xmax, ymin, ymax])  
+#设置X轴和Y轴的取值范围，等同于plt.xlim()+plt.ylim()
+plt.axis(“off”)
+#不显示坐标轴的线和值
+plt.xlabel()
+plt.xticks(range(len(x)), ['a', 'b', 'c', 'd', 'e', 'f'])  
+#设置刻度位置和文字
+plt.title()
+
+ax.set_title()
+ax.set_xlabel()
+ax.set_xticks(range(2000,2004))
+ax.set_xticklabels(['2000','2001','2002','2003','2004','2005'])
+ax.xaxis.set_ticks_position()		  # top, bottom, both, default or none
+ax.xaxis.set_major_locator()
+ax.xaxis.set_minor_locator()
+ax.xaxis.set_major_formatter(mpl.dates.DateFormatter("%Y-%m-%d"))
+ax.spines['right'].set_color('none')	   #（top, bottom,left,right）隐藏右侧坐标轴
+
+fig.autofmt_xdate(rotation)：当坐标文字过长时，可以旋转并对齐坐标文字
+#对最底部的subplot起效，但是会关闭其他subplots的X轴的显示
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+twinx()和twiny()：额外的y轴或x轴
+x = np.arange(0,np.e,0.01)
+y1 = np.exp(-x)
+y2 = np.log(x)
+fig = plt.figure()
+ax1 = fig.add_subplot(111)
+ax1.plot(x,y1)
+ax1.set_ylabel("Y values for exp(-x)")
+ax2 = ax1.twinx()
+ax2.plot(x,y2,"r")
+ax2.set_xlim([0,np.e])
+ax2.set_ylabel("Y values for ln(x)")
+ax1.set_xlabel("Same X for both exp(-x) and ln(x)")
+plt.show()
+ 
+
+sharex和sharey：共享Axes
+x = np.arange(11)
+fig = plt.figure()
+ax1 = fig.add_subplot(311)
+ax1.plot(x,x)
+ax2 = fig.add_subplot(312,sharex=ax1)
+ax2.plot(2*x,2*x)
+plt.show()
+ 
+
+
+
+
+
+
+
+
+对数轴
+semilogx()和semilogy()：兼有plot()和ax.set_xscale(“log”)功能
+loglog()：同时使X轴和Y轴成为对数级别
+x = np.arange(0,20,0.01)
+fig = plt.figure()
+ax1 = fig.add_subplot(311)
+y1 = np.exp(x/6)
+ax1.plot(x,y1)
+ax1.grid(True)
+ax1.set_yscale("log")
+ax1.set_ylabel("log Y")
+ax2 = fig.add_subplot(312)
+y2 = np.cos(np.pi*x)
+ax2.semilogx(x,y2)
+ax2.set_xlim([0,20])
+ax2.grid(True)
+ax2.set_ylabel("log Y")
+ax3 = fig.add_subplot(313)
+y3 = np.exp(x/4)
+ax3.loglog(x,y3,basex=3)
+ax3.grid(True)
+ax3.set_ylabel("log X and Y")
+plt.show()
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+线条属性
+plt.plot(x,y, 'go-', linewidth=4, label=”line1”)    #或者ax.plot
+plt.plot(t,t,"r--",t,t**2,"bs",t,t**3,"g^")
+
+字符	颜色
+‘b’	蓝色，blue
+‘g’	绿色，green
+‘r’	红色，red
+‘c’	青色，cyan
+‘m’	品红，magenta
+‘y’	黄色，yellow
+‘k’	黑色，black
+‘w’	白色，white
+字符	类型		字符	类型
+'-'	实线		'--'	虚线
+'-.'	虚点线	':'	点线
+'.'	点		','	像素点
+'o'	圆点		'v'	下三角点
+'^'	上三角点	'<'	左三角点
+'>'	右三角点	'1'	下三叉点
+'2'	上三叉点	'3'	左三叉点
+'4'	右三叉点	's'	正方点
+'p'	五角点	'*'	星形点
+'h'	六边形点1	'H'	六边形点2
+'+'	加号点	'x'	乘号点
+'D'	实心菱形点	'd'	瘦菱形点
+'_'	横线点	
+
+或者 setp()
+lines = plt.plot(x, y)
+plt.setp(lines, color='r', linewidth=2.0)    
+
+
+
+
+
+
+
+
+
+
+
+
+
+添加图例
+plt.legend()
+#loc：位置，默认upper right；可使用best自动调节；可使用元祖设置到图外
+#fontsize：int or float or {“xx-small”,”x-small”,”small”,”medium”}
+#title：默认为None
+ 
+
+p1, = plt.plot([1,2,3])
+p2, = plt.plot([3,2,1])
+plt.legend([p2,p1],["line 2","line 1"],loc="best")
+
+plt.plot([1,2,3],label="line 1")
+plt.plot([3,2,1],label="line 2")
+plt.legend(loc=(-0.1,0.9))
+
+添加表格
+plt.table(cellText=None, cellColours=None,cellLoc='right', colWidths=None,
+rowLabels=None, rowColours=None, rowLoc='left',colLabels=None, colColours=None, colLoc='center',loc='bottom', bbox=None)   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+子图
+gca()：获得当前图的坐标轴
+gcf()：获得当前图
+sca()：交替呈现子图
+
+fig = plt.figure()                   
+ax1 = fig.add_subplot(numRows,numCols,fignum)      
+
+fig, ((ax1, ax2), (ax3, ax4)) =  plt.subplots(nrows=2 , ncols=2 )
+
+fig,axes = plt.subplots(2,2)
+axes[0,0].plot(x,y)
+
+设置子图大小
+ 
+plt.subplot2grid()
+#plt.subplot2grid((2,2),(0, 0)) 类似于 plt.subplot(2,2,1)
+ax1 = plt.subplot2grid((3,3), (0,0), colspan=3)
+ax2 = plt.subplot2grid((3,3), (1,0), colspan=2)
+ax3 = plt.subplot2grid((3,3), (1, 2), rowspan=2)
+ax4 = plt.subplot2grid((3,3), (2, 0))
+ax5 = plt.subplot2grid((3,3), (2, 1))
+
+GridSpec（subplot栅格的几何结构）+ SubplotSpec（指定subplot的位置）
+gs = gridspec.GridSpec(3, 3)
+ax1 = plt.subplot(gs[0, :])
+ax2 = plt.subplot(gs[1,:-1])
+ax3 = plt.subplot(gs[1:, -1])
+ax4 = plt.subplot(gs[-1,0])
+ax5 = plt.subplot(gs[-1,-2])
+
+调整GridSpec的布局
+ 
+gs1 = gridspec.GridSpec(3, 3)
+gs1.update(left=0.05, right=0.48, wspace=0.05)
+ax1 = plt.subplot(gs1[:-1, :])
+ax2 = plt.subplot(gs1[-1, :-1])
+ax3 = plt.subplot(gs1[-1, -1])
+
+gs2 = gridspec.GridSpec(3, 3)
+gs2.update(left=0.55, right=0.98, wspace=0.05)
+ax4 = plt.subplot(gs2[:, :-1])
+ax5 = plt.subplot(gs2[:-1, -1])
+ax6 = plt.subplot(gs2[-1, -1])
+
+或者
+gs0 = gridspec.GridSpec(1, 2)
+gs00 = gridspec.GridSpecFromSubplotSpec(3, 3, subplot_spec=gs0[0])
+gs01 = gridspec.GridSpecFromSubplotSpec(3, 3, subplot_spec=gs0[1])
+
+调整GridSpec的大小
+ 
+gs = gridspec.GridSpec(2,2,width_ratios=[1,2],height_ratios=[4,1])
+ax1 = plt.subplot(gs[0])
+ax2 = plt.subplot(gs[1])
+ax3 = plt.subplot(gs[2])
+ax4 = plt.subplot(gs[3])
+
+或者
+rect1 = [0.1, 0.05, 0.25, 0.25]
+# [左下角横坐标,左下角纵坐标,宽,高]（全部是0~1之间的数，表示比例）
+rect2 = [0.1, 0.35, 0.25, 0.5]
+rect3 = [0.4, 0.05, 0.5, 0.25]
+rect4 = [0.4, 0.35, 0.5, 0.5]
+ax1 = plt.axes(rect1)
+ax2 = plt.axes(rect2)
+ax3 = plt.axes(rect3)
+ax4 = plt.axes(rect4)
+
+调整子图间的间距
+plt.tight_layout()
+
+
+
+
+
+
+颜色
+plt.cm(colormap)：内置的颜色表
+    
+colors = plt.cm.BuPu(np.linspace(0, 0.5, 5))
+
+
+
+
+
+
+
+
+
+
+
+
+文本
+plt.text(x, y, s, fontdict=None, withdash=False, **kwargs)
+#将注释文字放入方框text(x, y, s, bbox=dict(facecolor='red', alpha=0.5))
+#ax.text(left, top, ’rotated\nwith newlines’,horizontalalignment=’center’,
+   verticalalignment=’center’,rotation=45,transform=ax.transAxes)
+plt.xlabel()
+plt.ylabel()
+plt.title()
+plt.suptitle()：多个子图的总标题
+plt.annotate(s,xy,xytext,xycoords)
+#plt.annotate(’local max’, xy=(2, 1), xytext=(3, 1.5),
+arrowprops=dict(facecolor=’black’, shrink=0.05))
+
+fig = plt.figure()
+fig.suptitle("bold suptitle", fontsize=14, fontweight="bold")
+ax = fig.add_subplot(111)
+fig.subplots_adjust(top=0.85)
+ax.set_title("axes title")
+ax.set_xlabel("xlabel")
+ax.set_ylabel("ylabel")
+ax.text(3, 8, "boxed italics text in data coords",
+        style="italic",bbox={"facecolor":"red", "alpha":0.5, "pad":10})
+ax.text(2, 6, r"an equation: $E=mc^2$", fontsize=15)
+ax.text(0.95, 0.01, "colored text in axes coords",verticalalignment="bottom",
+        horizontalalignment="right",transform=ax.transAxes,color="green", 
+        fontsize=15)
+ax.plot([2], [1], "o")
+ax.annotate("annotate", xy=(2, 1), xytext=(3, 4),
+            arrowprops=dict(facecolor="black", shrink=0.05))
+ax.axis([0, 10, 0, 10])
+plt.show()
+
+ 
+
+
+
+
+
+
+转换
+ax.transData：基于坐标轴的绝对值
+ax.transAxes：基于坐标轴的相对比例，(0,0)为left bottom，(1,1)为 right top
+fig.transAxes
+
+fig = plt.figure()
+for i, label in enumerate(("A", "B", "C", "D")):
+    ax = fig.add_subplot(2,2,i+1)
+    ax.text(0.05, 0.95, label, transform=ax.transAxes,fontsize=16,
+            fontweight="bold", va="top")
+plt.show()
+ 
+混合转换
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import matplotlib.transforms as transforms
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+x = np.random.randn(1000)
+ax.hist(x, 30)
+ax.set_title(r"$\sigma=1 \/ \dots \/ \sigma=2$", fontsize=16)
+trans = transforms.blended_transform_factory(ax.transData, ax.transAxes)
+rect = patches.Rectangle((1,0), width=1, height=1,transform=trans,
+                         color="yellow",alpha=0.5)
+ax.add_patch(rect)
+plt.show()
+ 
+图形填充
+fill(x,y,’b’)
+fill_between(x, y1, y2=0, where=None, *, data=None,**kwargs)
+
+Nsteps, Nwalkers = 100, 250
+t = np.arange(Nsteps)
+S1 = 0.002 + 0.01*np.random.randn(Nsteps, Nwalkers)
+S2 = 0.004 + 0.02*np.random.randn(Nsteps, Nwalkers)
+# an (Nsteps x Nwalkers) array of random walker positions
+X1 = S1.cumsum(axis=0)
+X2 = S2.cumsum(axis=0)
+mu1 = X1.mean(axis=1)
+sigma1 = X1.std(axis=1)
+mu2 = X2.mean(axis=1)
+sigma2 = X2.std(axis=1)
+fig, ax = plt.subplots(1)
+ax.plot(t, mu1, lw=2, label='mean population 1', color='blue')
+ax.plot(t, mu2, lw=2, label='mean population 2', color='yellow')
+ax.fill_between(t, mu1+sigma1, mu1-sigma1, facecolor='blue', alpha=0.5)
+ax.fill_between(t, mu2+sigma2, mu2-sigma2, facecolor='yellow', alpha=0.5)
+ax.set_title('random walkers empirical $\mu$ and $\pm \sigma$ interval')
+ax.legend(loc='upper left')
+ax.set_xlabel('num steps')
+ax.set_ylabel('position')
+ax.grid()
+plt.show()
+ 
+
+np.random.seed(1234)
+Nsteps = 500
+t = np.arange(Nsteps)
+mu = 0.002
+sigma = 0.01
+S = mu + sigma*np.random.randn(Nsteps)
+X = S.cumsum()
+# 1 sigma的上下限（因为平均值是从大的总体产生，标准差为sigma/np.sqrt(t)）
+lower_bound = mu*t - sigma*np.sqrt(t)
+upper_bound = mu*t + sigma*np.sqrt(t)
+fig, ax = plt.subplots(1)
+ax.plot(t, X, lw=2, label='walker position', color='blue')
+ax.plot(t, mu*t, lw=1, label='population mean', color='black', ls='--')
+ax.fill_between(t, lower_bound, upper_bound, facecolor='yellow', alpha=0.5,
+                label='1 sigma range')
+ax.legend(loc='upper left')
+#使用 where关键字只填充超过上限的部分
+ax.fill_between(t, upper_bound, X, where=X>upper_bound, facecolor='blue', alpha=0.5)
+ax.set_xlabel('num steps')
+ax.set_ylabel('position')
+ax.grid()
+plt.show()
+ 
+
+图像
+读取图片：mpimg.imread()
+展示图片：plt.imshow()
