@@ -1,0 +1,27 @@
+t-SNE(t-distributed Stochastic Neighbor Embedding) t-分布邻域嵌入算法
+https://blog.csdn.net/lzl1663515011/article/details/46328337
+
+是一种可视化高维数据的工具。 它将数据点之间的相似性转换为联合概率，并尝试最小化低维嵌入和高维数据的联合概率之间的Kullback-Leibler散度。
+t-SNE具有非凸的成本函数，即，通过不同的初始化，我们可以得到不同的结果。
+如果特征的数量非常高，强烈建议使用另一维度降低方法（用于密集数据的PCA或用于稀疏数据的TruncatedSVD）将维度的数量减少到合理的量（例如50）。 
+这将抑制一些噪声并加速样本之间成对距离的计算。 
+
+sklearn.manifold.TSNE(n_components=2, perplexity=30.0, early_exaggeration=12.0, learning_rate=200.0, n_iter=1000, 
+                      n_iter_without_progress=300, min_grad_norm=1e-07, metric=’euclidean’, init=’random’, verbose=0, 
+                      random_state=None, method=’barnes_hut’, angle=0.5)
+----------------------------------------------------------------------------------------------------------------------
+参数
+n_components : int(default: 2) 嵌入空间的维度
+perplexity : float(default: 30) 最近邻接数据的数量(非敏感参数)
+early_exaggeration : float(default: 12.0) （非敏感参数）
+learning_rate : float, optional (default: 200.0)
+n_iter : int, optional (default: 1000)
+n_iter_without_progress : int, optional (default: 300)
+min_grad_norm : float, optional (default: 1e-7)
+metric : 距离类型
+-----------------------------------------------------------------------------------------------------------------------
+方法
+fit(X[, y])	Fit X into an embedded space.
+fit_transform(X[, y])	Fit X into an embedded space and return that transformed output.
+get_params([deep])	Get parameters for this estimator.
+set_params(**params)	Set the parameters of this estimator.
