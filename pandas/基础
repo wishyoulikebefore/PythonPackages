@@ -25,7 +25,7 @@ Series对象本身及其索引都有一个name属性
 
 DataFrame 
 是一种表格型的数据结构，非常接近于电子表格或者类似 mysql 数据库的形式
-既有行索引，又有列索引(index对象不可修改)
+可以通过values,index和columns属性获取其数组表示形式和索引对象(index对象不可修改)
 >>> data = {"state":["Ohio","Ohio","Ohio","Nevada","Nevada"],
 	"year":[2000,2001,2002,2001,2002],
 	"pop":[1.5,1.7,3.6,2.4,2.9]}
