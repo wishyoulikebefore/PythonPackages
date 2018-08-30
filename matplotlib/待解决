@@ -12,6 +12,7 @@ def heatmap(values, xlabel, ylabel, xticklabels, yticklabels, cmap=None,
     ax.set_yticklabels(yticklabels)
     ax.set_aspect(1)
 
+#根据格子颜色，改变anno的颜色,get_paths()获得栅格所有点的坐标，get_facecolors()获得颜色,get_array()获得对应值
     for p, color, value in zip(img.get_paths(), img.get_facecolors(),
                                img.get_array()):
         x, y = p.vertices[:-2, :].mean(0)
@@ -38,7 +39,7 @@ def discrete_scatter(x1, x2, y=None, markers=None, s=10, ax=None,
         ax = plt.gca()
 
     if y is None:    #未指定分类
-        y = np.arange(len(x1))
+        y = np.zeros(len(x1))
 
     unique_y = np.unique(y)
 
@@ -54,10 +55,10 @@ def discrete_scatter(x1, x2, y=None, markers=None, s=10, ax=None,
     # lines in the matplotlib sense, not actual lines
     lines = []
 
-    current_cycler = mpl.rcParams['axes.prop_cycle']
+    current_cycler = mpl.rcParams['axes.prop_cycle']    #更改默认属性中的颜色循环
 
     for i, (yy, cycle) in enumerate(zip(unique_y, current_cycler())):
-        mask = y == yy
+        mask = y == yy      #mask = (y == yy) 0或1
         # if c is none, use color cycle
         if c is None:
             color = cycle['color']
