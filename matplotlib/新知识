@@ -1,0 +1,3 @@
+matplotlib.axes.Axes.pcolormesh()
+创造非规则矩形网格的伪彩色图，比pcolor速度更快
+
