@@ -1,3 +1,15 @@
 matplotlib.axes.Axes.pcolormesh()
 创造非规则矩形网格的伪彩色图，比pcolor速度更快
+-------------------------------------------
+参数
+C : array_like， The values will be color-mapped
+X, Y : array_like, 四边形角坐标
+cmap : The colormap maps the C values to colors. Defaults to rcParams["image.cmap"]
+norm : Normalize, optional
+#The Normalize instance scales the data values to the canonical colormap range [0, 1] for mapping to colors
+vmin, vmax : scalar, optional, default: None
+#The colorbar range. If None, suitable min/max values are automatically chosen by the Normalize instance 
+edgecolors : {'none', None, 'face', color, color sequence}, optional
+The color of the edges
+
 
