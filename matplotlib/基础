@@ -55,16 +55,7 @@ savefig.dpi : 100
 savefig.facecolor 
 savefig.edgecolor 
 
-坐标
-plt.axis([xmin, xmax, ymin, ymax])  
-#设置X轴和Y轴的取值范围，等同于plt.xlim()+plt.ylim()
-plt.axis(“off”)
-#不显示坐标轴的线和值
-plt.xlabel()
-plt.xticks(range(len(x)), ['a', 'b', 'c', 'd', 'e', 'f'])  
-#设置刻度位置和文字
-plt.title()
-
+坐标轴设置
 ax.set_title()
 ax.set_xlabel()
 ax.set_xticks(range(2000,2004))
