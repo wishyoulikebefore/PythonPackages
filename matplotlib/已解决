@@ -80,7 +80,7 @@ def discrete_scatter(x1, x2, y=None, markers=None, s=10, ax=None,
         lines.append(ax.plot(x1[mask], x2[mask], markers[i], markersize=s,
                              label=labels[i], alpha=alpha, c=color,
                              markeredgewidth=markeredgewidth,
-                             markeredgecolor=markeredgecolor)[0])
+                             markeredgecolor=markeredgecolor))
 
     if padding != 0:
         pad1 = x1.std() * padding
