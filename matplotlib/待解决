@@ -20,7 +20,7 @@ def heatmap(values, xlabel, ylabel, xticklabels, yticklabels, cmap=None,
     """
     for p, color, value in zip(img.get_paths(), img.get_facecolors(),
                                img.get_array()):
-        x, y = p.vertices[:-2, :].mean(0)
+        x, y = p.vertices[:-2, :].mean(0)    #前四个坐标为四个边角的坐标，后两个是左下角坐标
         if np.mean(color[:3]) > 0.5:
             c = 'k'
         else:
