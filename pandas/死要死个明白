@@ -6,3 +6,6 @@ df
 1  3  NaN
 
 2）dataframe是pandas自己定义的格式，不为*args和**kargs识别
+解决方法
+a）返回dataframe的函数中自行计算耗时，不使用装饰器
+b）
