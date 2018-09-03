@@ -1,6 +1,8 @@
-nan默认是浮点类型，数字混杂nan会导致整数变为浮点数
+1）nan默认是浮点类型，数字混杂nan会导致整数变为浮点数
 df = pd.DataFrame([[1,2],[3,np.nan]])
 df
    0    1
 0  1  2.0
 1  3  NaN
+
+2）dataframe是pandas自己定义的格式，不为*args和**kargs识别
