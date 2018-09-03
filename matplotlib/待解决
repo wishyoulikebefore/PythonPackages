@@ -10,9 +10,14 @@ def heatmap(values, xlabel, ylabel, xticklabels, yticklabels, cmap=None,
     ax.set_yticks(np.arange(len(yticklabels)) + .5)
     ax.set_xticklabels(xticklabels)
     ax.set_yticklabels(yticklabels)
-    ax.set_aspect(1)
+    ax.set_aspect(1)   #the ratio of y-unit to x-unit
 
-#根据格子颜色，改变anno的颜色,get_paths()获得栅格所有点的坐标，get_facecolors()获得颜色,get_array()获得对应值
+    """
+    根据格子颜色，改变anno的颜色
+    get_paths()获得栅格角坐标
+    get_facecolors()获得颜色
+    get_array()获得对应值
+    """
     for p, color, value in zip(img.get_paths(), img.get_facecolors(),
                                img.get_array()):
         x, y = p.vertices[:-2, :].mean(0)
