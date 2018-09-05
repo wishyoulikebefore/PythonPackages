@@ -74,7 +74,7 @@ def detect_difference(meth_df,T_sample,N_sample):
     start = time.time()
     meth_df["T_mean"] = meth_df[T_sample].mean(axis=1)
     meth_df["N_mean"] = meth_df[N_sample].mean(axis=1)
-    meth_df["diff"] = meth_df["T_mean"]-meth_df["N_mean"]
+    meth_df["diff"] = meth_df["T_mean"]-meth_df["N_mean"]   #meth_df["T_mean"]/meth_df["N_mean"]是否更好，防止分母为0
     meth_df = meth_df.sort_values(by="diff",ascending=False)
     filtered_df = pd.concat([meth_df[:500],meth_df[-500:]])
     end = time.time()
