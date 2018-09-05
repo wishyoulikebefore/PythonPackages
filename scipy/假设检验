@@ -1,0 +1,12 @@
+伯努利检验
+binom_test(x, n=None, p=0.5, alternative='two-sided')
+
+卡方检验
+chi2_contingency(observed, correction=True, lambda_=None)
+>>> obs = np.array([[10, 10, 20], [20, 20, 20]])
+>>> chi2, p, dof, ex = chi2_contingency(obs, correction=False)
+
+fisher精确检验
+fisher_exact(table, alternative='two-sided')
+#Performs a Fisher exact test on a 2x2 contingency table.
+>>> oddsratio, pvalue = stats.fisher_exact([[8, 2], [1, 5]])
