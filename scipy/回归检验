@@ -1,0 +1,7 @@
+1）Spearman correlation
+scipy.stats.spearmanr
+corr, p_value = spearmanr(x, y)
+
+2）Pearson correlation
+scipy.stats.pearsonr
+corr, p_value = pearsonr(x, y)
