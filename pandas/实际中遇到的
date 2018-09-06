@@ -29,5 +29,6 @@ repeat	重复值。例如s.str.repeat(3)相当于对各个字符串执行x * 3
 replace	用指定字符串替换找到的模式
 -----------------------------------------------------
 df["type"] = df.index.str[-1]
+df["A"].str.contains("cc")
 
 
