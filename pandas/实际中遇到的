@@ -15,3 +15,19 @@ df["订单号"].extract("(\d+)")
 
 4）解决console显示值省略
 pd.set_option('display.max_colwidth',1000)
+
+5）矢量化的字符串函数：通过Series.str属性访问
+-----------------------------------------------------
+contains	
+count	
+endswith、startswith	
+get	获取各元素的第i个字符
+len	
+lower、upper	
+match	根据指定的正则表达式对各个元素执行re.match
+repeat	重复值。例如s.str.repeat(3)相当于对各个字符串执行x * 3
+replace	用指定字符串替换找到的模式
+-----------------------------------------------------
+df["type"] = df.index.str[-1]
+
+
