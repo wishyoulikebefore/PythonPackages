@@ -55,7 +55,7 @@ savefig.dpi : 100
 savefig.facecolor 
 savefig.edgecolor 
 
-坐标轴设置
+坐标
 ax.set_title()
 ax.set_xlabel()
 ax.set_xticks(range(2000,2004))
@@ -68,20 +68,6 @@ ax.spines['right'].set_color('none')	   #（top, bottom,left,right）隐藏右�
 
 fig.autofmt_xdate(rotation)：当坐标文字过长时，可以旋转并对齐坐标文字
 #对最底部的subplot起效，但是会关闭其他subplots的X轴的显示
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 twinx()和twiny()：额外的y轴或x轴
 x = np.arange(0,np.e,0.01)
@@ -98,7 +84,6 @@ ax2.set_ylabel("Y values for ln(x)")
 ax1.set_xlabel("Same X for both exp(-x) and ln(x)")
 plt.show()
  
-
 sharex和sharey：共享Axes
 x = np.arange(11)
 fig = plt.figure()
@@ -108,13 +93,6 @@ ax2 = fig.add_subplot(312,sharex=ax1)
 ax2.plot(2*x,2*x)
 plt.show()
  
-
-
-
-
-
-
-
 
 对数轴
 semilogx()和semilogy()：兼有plot()和ax.set_xscale(“log”)功能
@@ -140,18 +118,6 @@ ax3.grid(True)
 ax3.set_ylabel("log X and Y")
 plt.show()
  
-
-
-
-
-
-
-
-
-
-
-
-
 线条属性
 plt.plot(x,y, 'go-', linewidth=4, label=”line1”)    #或者ax.plot
 plt.plot(t,t,"r--",t,t**2,"bs",t,t**3,"g^")
@@ -165,6 +131,7 @@ plt.plot(t,t,"r--",t,t**2,"bs",t,t**3,"g^")
 ‘y’	黄色，yellow
 ‘k’	黑色，black
 ‘w’	白色，white
+
 字符	类型		字符	类型
 '-'	实线		'--'	虚线
 '-.'	虚点线	':'	点线
@@ -183,7 +150,6 @@ plt.plot(t,t,"r--",t,t**2,"bs",t,t**3,"g^")
 或者 setp()
 lines = plt.plot(x, y)
 plt.setp(lines, color='r', linewidth=2.0)    
-
 
 
 
@@ -215,35 +181,24 @@ plt.legend(loc=(-0.1,0.9))
 plt.table(cellText=None, cellColours=None,cellLoc='right', colWidths=None,
 rowLabels=None, rowColours=None, rowLoc='left',colLabels=None, colColours=None, colLoc='center',loc='bottom', bbox=None)   
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 子图
 gca()：获得当前图的坐标轴
 gcf()：获得当前图
 sca()：交替呈现子图
 
 fig = plt.figure()                   
-ax1 = fig.add_subplot(numRows,numCols,fignum)      
+1）ax1 = fig.add_subplot(numRows,numCols,fignum)      
 
-fig, ((ax1, ax2), (ax3, ax4)) =  plt.subplots(nrows=2 , ncols=2 )
+2）fig, ((ax1, ax2), (ax3, ax4)) =  plt.subplots(2,2 )
 
-fig,axes = plt.subplots(2,2)
+3）fig,axes = plt.subplots(2,2)
 axes[0,0].plot(x,y)
+
+
+
+
+
+
 
 设置子图大小
  
@@ -309,6 +264,15 @@ plt.tight_layout()
 
 
 
+
+
+
+
+
+
+
+
+
 颜色
 plt.cm(colormap)：内置的颜色表
     
@@ -334,6 +298,7 @@ plt.xlabel()
 plt.ylabel()
 plt.title()
 plt.suptitle()：多个子图的总标题
+plt.arrow(x, y, dx, dy)
 plt.annotate(s,xy,xytext,xycoords)
 #plt.annotate(’local max’, xy=(2, 1), xytext=(3, 1.5),
 arrowprops=dict(facecolor=’black’, shrink=0.05))
@@ -358,7 +323,6 @@ ax.axis([0, 10, 0, 10])
 plt.show()
 
  
-
 
 
 
