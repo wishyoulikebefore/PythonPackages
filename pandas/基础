@@ -227,10 +227,10 @@ if-then-else
 2    6   30  -30  high
 3    7   40  -50  high
 
-And(&)
+And(&)  [(condition1) & (condition2)]
 >>> newseries = df.loc[(df['BBB'] < 25) & (df['CCC'] >= -40), 'AAA']
 
-Or(|)
+Or(|)	[(condition1) | (condition2)]
 >>> df.loc[(df['BBB'] > 25) | (df['CCC'] >= 75), 'AAA'] = 0.1
 
 算数运算，数据对齐及填充
