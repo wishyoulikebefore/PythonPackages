@@ -12,4 +12,10 @@ vmin, vmax : scalar, optional, default: None
 edgecolors : {'none', None, 'face', color, color sequence}, optional
 The color of the edges
 
+画垂直线
+vlines(x, ymin, ymax)
+hlines(y, xmin, xmax)
+---------------------------------------
+plt.vlines(0, 0, 0.5, colors = "c", linestyles = "dashed")
+
 
