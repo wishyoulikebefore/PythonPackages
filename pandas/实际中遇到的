@@ -31,4 +31,5 @@ replace	用指定字符串替换找到的模式
 df["type"] = df.index.str[-1]
 df["A"].str.contains("cc")
 
+6）对于一个dataframe：df[""]返回Series，而df[[""]]返回DataFrame，这在使用sklearn模块时很有用
 
