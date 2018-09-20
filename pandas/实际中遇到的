@@ -8,7 +8,7 @@ df.ix[:,df.all()]
 引申：删除存在0的行
 df.ix[df.all(axis=1)
 引申：删除所有值均为0的行
-df.ix[(df == 0).any(axis=1)]
+df.ix[df.any(axis=1)]
 
 3)分列
 df['柜台名称'].str.split('-',expand=True) 
