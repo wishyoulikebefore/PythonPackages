@@ -24,6 +24,7 @@ contains
 count	
 endswith、startswith	
 get	获取各元素的第i个字符
+count
 len	
 lower、upper	
 match	根据指定的正则表达式对各个元素执行re.match
