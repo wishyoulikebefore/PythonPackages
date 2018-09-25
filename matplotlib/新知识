@@ -19,10 +19,6 @@ hlines(y, xmin, xmax)
 plt.vlines(0, 0, 0.5, colors = "c", linestyles = "dashed")
 
 自定义渐变色
-作者：匿名用户
-链接：https://www.zhihu.com/question/64662359/answer/222944800
-来源：知乎
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
 import numpy as np
 import matplotlib.pyplot as plt
