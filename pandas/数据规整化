@@ -133,7 +133,14 @@ In [25]: tips.pivot_table("tip",index=["sex","day"],columns="smoker",aggfunc="co
  
 
 melt(frame, id_vars=None, value_vars=None, var_name=None, value_name='value', col_level=None)
-#逆透视
+-----------------------------------------------------------------------------------------------------------
+逆透视
+#id_vars:不需要被转换的列名。
+#value_vars:需要转换的列名；None对应其它列都需要被转化
+#var_name：转化列的列名
+#value_name：转化列对应的值
+最终生成的dataframe：行数 = len(df)*len(value_vars)
+-----------------------------------------------------------------------------------------------------------
  
 交叉表：crosstab
 #计算分组频率的特殊透视表
