@@ -1,4 +1,4 @@
-离散计数分布
+离散计数分布（https://www.theanalysisfactor.com/poisson-or-negative-binomial-using-count-model-diagnostics-to-select-a-model/）
 ------------------------------------------------------------------------------------
 伯努利分布是在（固定）n次独立试验中，出现success事件的概率分布。对应有限数据集{0,1,2,…,n}
 负伯努利分布是在（固定）n次success前出现failure的次数的概率分布。对应无限数据集{0,1,2,3,…}
