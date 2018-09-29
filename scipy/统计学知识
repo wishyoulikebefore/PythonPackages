@@ -8,3 +8,5 @@
 1）Poisson distribution, if mean = variance
 2）Binomial distribution, if mean > variance
 3）Negative binomial distribution, if mean < variance
+
+但是，使用哪种模型不需要纠结其定义，而是要根据数据类型（离散or连续），特征（mean vs variance），因为定义可以扩展，不要形而上学
