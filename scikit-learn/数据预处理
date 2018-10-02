@@ -1,0 +1,12 @@
+1）多核并行，提高速率
+import concurrent.futures
+
+def load_and_resize(image_filename):
+  img = cv2.imread(image_filename)
+  img = cv2.resize(img,(600,600))
+
+with concurrent.futures.ProcessPoolExecutor() as executor:
+  image_files = glob.glob("*.jpg")
+  executor.map(load_and_resize,image_files)
+ 
+ #利用multiprocessing也可以实现相同功能，但在预处理文件时不一定会想到利用多进程
