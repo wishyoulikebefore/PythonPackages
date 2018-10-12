@@ -36,3 +36,31 @@ df["A"].str.contains("cc")
 
 6）对于一个dataframe：df[""]返回Series，而df[[""]]返回DataFrame，这在使用sklearn模块时很有用
 
+7）透视与逆透视的相互转换
+类似melt后的数据
+       cell  count
+gene
+33665     1      5
+33663     1      4
+33662     1     10
+33660     1     11
+33659     1     13
+33658     1     10
+33656     1     14
+33655     1     39
+33654     1     26
+33653     1      8
+33636     1      1
+使用pivot_table进行转换
+      count                                                       ...
+cell   1     2     3     4     5     6    7     8     9     10    ...   5011  5012  5013  5014  5015  5016  5017  5018  5019  5020
+gene                                                              ...
+4       NaN   NaN   NaN   NaN   NaN   NaN  NaN   NaN   NaN   NaN  ...    NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN
+5       NaN   NaN   NaN   NaN   NaN   NaN  NaN   NaN   NaN   NaN  ...    NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN
+9       NaN   NaN   NaN   NaN   NaN   NaN  NaN   NaN   NaN   NaN  ...    NaN   NaN   1.0   NaN   NaN   NaN   NaN   NaN   NaN   NaN
+10      NaN   NaN   NaN   NaN   NaN   NaN  NaN   NaN   NaN   NaN  ...    NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN
+13      NaN   NaN   NaN   NaN   NaN   NaN  NaN   NaN   NaN   NaN  ...    NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN
+15      NaN   NaN   NaN   NaN   NaN   NaN  NaN   NaN   NaN   NaN  ...    NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN
+19      NaN   NaN   NaN   NaN   NaN   NaN  NaN   NaN   NaN   NaN  ...    NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN
+
+
