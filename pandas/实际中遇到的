@@ -66,6 +66,6 @@ gene                                                              ...
 8）pandas广播
 默认情况下，DataFrame和Series之间的算术运算会将Series的索引匹配到DataFrame的列，然后沿着行一直向下广播
 #在行上进行广播  frame-series
-如果匹配行且在列上广播，则必须使用算术运算方法
+如果匹配行且在列上广播，则必须使用算术运算方法（add sub mul div）
 #在列上进行广播  frame.sub(series1,axis=0)
 
