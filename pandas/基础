@@ -281,7 +281,7 @@ one    4  5  6  7
 three  0  1  2  3
 one    4  5  6  7
 
-排名：rank(axis=0,mmethod=”average”,ascending=True)
+排名：rank(axis=0,method=”average”,ascending=True)
 # method : {'average', 'min', 'max', 'first', 'dense'}
         * average: 相等分组中为各个值平均分配排名
         * min: 整个分组中最小排名
