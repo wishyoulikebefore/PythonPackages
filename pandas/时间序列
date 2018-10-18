@@ -1,5 +1,4 @@
 日期和时间数据类型及工具
-
 import datetime
 
 获得年，月，日
@@ -28,7 +27,7 @@ In [14]: value = "2018-05-10"
 In [17]: datetime.datetime.strptime(value,"%Y-%m-%d")
 Out[17]: datetime.datetime(2018, 5, 10, 0, 0)
 
-使用dateutil.parser.parse，可以解析几乎所有的日期表示形式
+使用dateutil.parser.parse，可以解析几乎所有的日期表示形式(或者dateparser.parse)
 In [20]: from dateutil.parser import parse
 In [22]: parse("6/12/2011",dayfirst=True)   
 #国际格式中日会出现在月前：日/月/年，而一般是月/日/年，
