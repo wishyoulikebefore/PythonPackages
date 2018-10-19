@@ -1,0 +1,5 @@
+edgeR:不同样本间RNAseq数据的标化
+Seurat：不同细胞间UMI counts的标化
+
+出发点都是要解决测序量不同导致各基因的表达水平不能直接比较
+edgeR先要找个“锚”，而Seurat没有
