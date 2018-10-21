@@ -48,7 +48,6 @@ def find_variable_genes(logNorm_df,mean="ExpMean",dispersion="logVMR",x_low=0.1,
     """
     temp_df = np.exp(logNorm_df.fillna(0)) - 1
     expmean = temp_df.mean(axis=1)
-#    expmean = np.exp(logNorm_df).mean(axis=1)
     gene_mean = np.log1p(expmean)
     variance = np.power(temp_df.sub(expmean,axis=0), 2).sum(axis=1)/(len(logNorm_df.columns)-1)
     gene_dispersion = np.log(variance/expmean).replace(-np.inf,0)
