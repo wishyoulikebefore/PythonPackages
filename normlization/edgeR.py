@@ -43,6 +43,7 @@ def cal_normalize_factor(df,obs,ref,logratioTrim=0.3,sumTrim=0.05,cutoff=-1e10,w
     if filter_df["M"].abs().max() < 1e-6:
         return
     #TMM normalization （trimmed mean of M-values）
+    #删除M值上下30%，A值上下5%
     filter_genes_num = len(filter_df)
     low_L = np.floor(filter_genes_num*logratioTrim)
     high_L = filter_genes_num - low_L
