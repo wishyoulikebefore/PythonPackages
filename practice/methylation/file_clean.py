@@ -3,6 +3,9 @@ import os
 import glob
 import argparse
 import re
+import shutil
+
+process_dir = open("processed_dir","a+")
 
 def parse_args():
     parser = argparse.ArgumentParser(description="保留对应的文件")
@@ -20,11 +23,16 @@ def clean_save(work_dir,log_dir,keep_files):
         finished_samples.append(sample_name)
     for sample in finished_samples:
         os.chdir("Sample_%s" %(sample))
+        process_dir.write(os.getcwd()+"\n")
         for _file in glob.glob("*"):
             if delete(_file,keep_files):
                 pass
             else:
-                os.remove(_file)
+                try:
+                    os.remove(_file)
+                except Exception as e:
+                    shutil.rmtree(_file, ignore_errors=True)
+        os.chdir(work_dir)
 
 def delete(_file,keep_files):
     for keep in keep_files:
