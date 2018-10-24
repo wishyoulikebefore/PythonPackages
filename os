@@ -20,7 +20,7 @@ os.removedirs()
 os.mkdir()    
 生成单级目录
 os.rmdir()    
-删除单级空目录，若目录不为空则无法删除，报错
+删除单级空目录，若目录不为空则无法删除，报错，需要用shutil.rmtree
 os.pardir()    
 获取当前目录的父目录字符串名
 os.listdir()    
