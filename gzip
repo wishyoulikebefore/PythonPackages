@@ -1,0 +1,40 @@
+利用gzip读写压缩文件
+gzip.open()
+
+-----------------------------------------------------------------
+import gzip
+import argparse
+import glob
+import os
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="trim R2文件")
+    parser.add_argument("-d",help="Project目录")
+    args = parser.parse_args()
+    return args.d
+
+def start_process(wd):
+    for sample_dir in glob.glob("Sample*"):
+        os.chdir(sample_dir)
+        for R2_file in glob.glob("*R2.fastq.gz"):
+            trim_file(R2_file)
+        os.chdir(wd)
+
+def trim_file(R2_file):
+    with gzip.open("trimmed_%s" %(R2_file),"a") as output:
+        with gzip.open(R2_file) as f:
+            for nu,line in enumerate(f):
+                if nu % 4 == 1 or nu % 4 ==3:
+                    if len(line.strip()) == 300:
+                        output.write(line[30:])
+                    else:
+                        output.write(line)
+                else:
+                    output.write(line)
+        f.close()
+        print("%s已处理完毕" %(R2_file))
+
+if __name__ == "__main__":
+    wd = parse_args()
+    start_process(wd)
+-----------------------------------------------------------------
