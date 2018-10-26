@@ -8,7 +8,7 @@ sep或delimiter：对各字段进行拆分的字符序列或正则表达式
 header：用作列名的行号，默认第一行；不然需要指定None
 index_col：用作行索引的列编号或列名
 names：自定义列名，结合header=None
-skiprows：需要忽略的行数,指定跳过行的位置列表或者跳过行的行数
+skiprows：需要忽略的行数(int:从头跳过行数,list：从头跳过的行索引列表)
 na_values：用于替换NA的值
 parse_dates：尝试将数据解析为日期
 nrows：需要读取的行数
