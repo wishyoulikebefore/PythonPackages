@@ -1,6 +1,5 @@
 shutil模块
-shutil -- High-level file operations 是一种高层次的文件操作工具
-类似于高级API，而且主要强大之处在于其对文件的复制与删除操作更是比较支持好。
+是一种高层次的文件操作工具,主要强大之处在于其对文件的复制与删除操作更是比较支持好。
 
 FUNCTIONS
 copy(src, dst, *, follow_symlinks=True)
@@ -28,7 +27,14 @@ move(src, dst, copy_function=<function copy2 at 0x0000024CC62ACB70>)
     
 rmtree(path, ignore_errors=False, onerror=None)   #可以删除非空目录（os.rmdir无法做到）
 #Recursively delete a directory tree.
-        
+
+unpack_archive(filename,extract_dir=None)	解压缩文件
+
+make_archive(base_name, format, root_dir=None)	压缩文件
+#base_name：压缩完文件的名字
+#format：bztar, gztar, tar, zip
+#root_dir：压缩文件的起始位置（默认当前目录）
+ 
 使用requests下载资源
 import requests
 import shutil
