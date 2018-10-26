@@ -8,10 +8,10 @@ sep或delimiter：对各字段进行拆分的字符序列或正则表达式
 header：用作列名的行号，默认第一行；不然需要指定None
 index_col：用作行索引的列编号或列名
 names：自定义列名，结合header=None
-skiprows：需要忽略的行数
+skiprows：需要忽略的行数,指定跳过行的位置列表或者跳过行的行数
 na_values：用于替换NA的值
 parse_dates：尝试将数据解析为日期
-nrows：从头开始，需要读取的行数
+nrows：需要读取的行数
 chunksize：文件块的大小（用于迭代）
 skip_footer：从文件末尾开始，需要忽略的行数
 dtype：设定某列数据的属性，节约内存，如dtype={"user_id": int, "username": object}
