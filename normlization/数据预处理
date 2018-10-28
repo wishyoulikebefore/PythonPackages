@@ -30,5 +30,3 @@ from sklearn.preprocessing import OneHotEncoder
 4)存在缺失值：缺失值需要补充。
 5)信息利用率低：不同的机器学习算法和模型对数据中信息的利用是不同的
 #使用sklearn中的preproccessing库来进行数据预处理
-
-http://www.cnblogs.com/jasonfreak/p/5448385.html
