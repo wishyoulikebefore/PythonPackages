@@ -6,9 +6,7 @@ import argparse
 
 """
 遗留问题
-Per base sequence content
-warning if the difference between A and T, or G and C is greater than 10% in any position
-fail if the difference between A and T, or G and C is greater than 20% in any position
+以装饰器用在其他脚本上
 """
 
 def parse_args():
