@@ -7,6 +7,8 @@ json.loads()
 json.dumps()
 #将一个Python数据结构转换回一个JSON编码的字符串
 
-读取json文件
+读写json文件
 json.load(open(file))
+
+json.dump(dict,file)
 
