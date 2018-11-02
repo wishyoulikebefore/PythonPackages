@@ -12,3 +12,5 @@ json.load(open(file))
 
 json.dump(dict,file)
 
+查看Json数据结构
+jsondata.keys()
