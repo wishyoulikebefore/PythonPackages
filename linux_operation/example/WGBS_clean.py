@@ -5,6 +5,10 @@ import argparse
 import re
 import shutil
 
+"""
+p3 ~/script/methylation/file_clean.py -d /ehpcdata/zuotianyu/WGBS -ld 01task_bismark -k bam pe.CX_report.txt PE_report.txt
+"""
+
 process_dir = open("processed_dir","a+")
 
 def parse_args():
