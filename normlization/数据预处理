@@ -4,7 +4,7 @@
 3）依赖于样本距离的算法对于数据的数量级非常敏感
 
 区间缩放（Min-Max scaling）：
-标准化（z-score standardization）：将原始数据归一化成均值为0、方差1的数据
+标准化（z-score standardization）：将原始数据归一化成均值为0、方差1的数据   scipy.stats.zscore
 数据正则化
 
 特征二值化：设置阈值，将特征的取值转化为0或1
