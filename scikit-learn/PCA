@@ -1,6 +1,7 @@
 PCA（principal component analysis）：主成分分析
 是一种旋转数据集的方法，根据新特征对解释数据的重要性来选择子集
 将方差最大的方向作为主要特征，并且在各个正交方向上将数据“离相关”，也就是让它们在不同正交方向上没有相关性
+对于表示同一类数据样本的共同特征是非常有效的，但不适合用于区分不同的样本类
 
 sklearn.decomposition.PCA(n_components=None, copy=True, whiten=False, svd_solver=’auto’, tol=0.0, iterated_power=’auto’, random_state=None)
 -------------------------------------------------------------------------------
