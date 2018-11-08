@@ -3,7 +3,7 @@
 2）数量级的差异将导致迭代收敛速度减慢
 3）依赖于样本距离的算法对于数据的数量级非常敏感
 
-区间缩放（Min-Max scaling）：
+区间缩放（Min-Max scaling）： sklearn.preprocessing.MinMaxScaler
 标准化（z-score standardization）：将原始数据归一化成均值为0、方差1的数据   scipy.stats.zscore
 数据正则化
 
