@@ -1,0 +1,3 @@
+ax1 = plt.subplot(121, projection='polar')
+ρ表示线段OM的长度（有时也用r表示），θ表示从Ox到OM的角度，有序数对 (ρ,θ)就叫点M的极坐标
+ax1.plot(theta,theta/6,'--',lw=2)
