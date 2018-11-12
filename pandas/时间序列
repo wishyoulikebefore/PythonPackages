@@ -22,10 +22,13 @@ In [12]: stamp = datetime.datetime(2018,5,10)
 In [13]: str(stamp)
 Out[13]: '2018-05-10 00:00:00'
 
-2）字符串转换为日期
+2）字符串转换为日期（strptime）
 In [14]: value = "2018-05-10"
 In [17]: datetime.datetime.strptime(value,"%Y-%m-%d")
 Out[17]: datetime.datetime(2018, 5, 10, 0, 0)
+
+时间戳转化为datetime（fromtimestamp）
+In [18]: datetime.datetime.fromtimestamp(os.path.getmtime("000014.csv"))
 
 判断是否为周末：datetime模块
 date.isoweekday()
