@@ -1,0 +1,3 @@
+cov(m, y=None, rowvar=True)  计算协方差
+#If rowvar is True (default), then each row represents a variable
+计算结果：对角线为方差
