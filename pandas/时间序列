@@ -27,6 +27,12 @@ In [14]: value = "2018-05-10"
 In [17]: datetime.datetime.strptime(value,"%Y-%m-%d")
 Out[17]: datetime.datetime(2018, 5, 10, 0, 0)
 
+判断是否为周末：datetime模块
+date.isoweekday()
+#Return the day of the week as an integer, where Monday is 1 and Sunday is 7
+date.weekday()
+#Return the day of the week as an integer, where Monday is 0 and Sunday is 6
+
 使用dateutil.parser.parse，可以解析几乎所有的日期表示形式(或者dateparser.parse)
 In [20]: from dateutil.parser import parse
 In [22]: parse("6/12/2011",dayfirst=True)   
