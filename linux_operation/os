@@ -28,6 +28,13 @@ path.basename()：返回文件基名
 'a.txt'
 ------------------------------------------
 path.getsize()：获得文件大小
+path.getxtime()：获取三个时间（时间戳形式）
+-----------------------------------------
+getatime()
+getctime()
+getmtime()
+需要转换：datetime.datetime.fromtimestamp()
+-----------------------------------------
 path.splitext()：分离文件名与扩展名，用于判断某一类型文件
 ------------------------------------------
 >>> os.path.splitext('a.txt')
