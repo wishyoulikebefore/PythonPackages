@@ -37,3 +37,11 @@ path.join(path,name)：连接目录与文件名或目录
 
 os.chmod('pathfile',os.W_OK)    
 
+os.system()：运行shell命令
+-----------------------------------------
+自动关机
+os.system('shutdown -s -t 1')
+重启
+os.system('shutdown -r')
+-----------------------------------------
+
