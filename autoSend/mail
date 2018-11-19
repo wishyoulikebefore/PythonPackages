@@ -12,7 +12,7 @@ def autoMail(subject,content):
     只发送文字信息
     """
     msg_from = 'ttyyzuo@163.com'
-    passwd = 'fd10yyer'  # 填入发送方邮箱的授权码
+    passwd = input("填入授权码：")  
     msg_to = '983823942@qq.com'
     msg = MIMEText(content)
     msg['Subject'] = subject
@@ -34,7 +34,7 @@ def myMail(subject,content,graphs=None,graphsName=None,files=None,filesName=None
     待解决问题：中文名的乱码
     """
     msg_from = 'ttyyzuo@163.com'
-    passwd = 'fd10yyer'  # 填入发送方邮箱的授权码
+    passwd = input("填入授权码：") 
     msg_to = '983823942@qq.com'
     msg = MIMEMultipart()
     msg['Subject'] = subject
