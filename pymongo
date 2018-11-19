@@ -37,9 +37,8 @@ $gt大于{'age': {'$gt': 20}}
 $lte小于等于{'age': {'$lte': 20}}
 $gte大于等于{'age': {'$gte': 20}}
 $ne不等于{'age': {'$ne': 20}}
-$in在范围内{'age': {'$in': [20, 23]}}
+$in在范围内{'age': {'$in': [20, 23]}}      #也可以对数组进行操作
 $nin不在范围内{'age': {'$nin': [20, 23]}}
-
 
 $regex匹配正则{'name': {'$regex': '^M.*'}}name以M开头
 $exists属性是否存在{'name': {'$exists': True}}name属性存在
@@ -127,6 +126,11 @@ collection.find().sort('name', pymongo.ASCENDING).skip(2).limit(2)
 对数组进行操作
 $all：判断数组属性是否包含全部条件
 collection.find({“data”:{“$all”:[2,3,4]}})
+------------------------------------------
+db.users.find({age : {$all : [6, 8]}});  
+可以查询出  {name: 'David', age: 26, age: [ 6, 8, 9 ] }  
+但查询不出  {name: 'David', age: 26, age: [ 6, 7, 9 ] }
+--------------------- ---------------------
 
 $size：匹配数组属性元素数量
 collection.find({“data”:{“$size”:3}})
