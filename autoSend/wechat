@@ -1,7 +1,0 @@
-import itchat
-
-itchat.auto_login()
-#二维码登陆
-
-itchat.send('Hello, filehelper', toUserName='filehelper')
-#给文件传输助手发一条信息
