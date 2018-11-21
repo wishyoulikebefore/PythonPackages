@@ -1,7 +1,0 @@
-控制台输出字体为彩色
-from colorama import Fore,Back,init
-
-init(autoreset=True)   
-#让变色效果只对当前输出起作用，输出完成后颜色恢复默认设置
-print(Fore.GREEN+"aaa")
-print(Back.CYAN+"bbb")
