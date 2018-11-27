@@ -1,0 +1,10 @@
+R下载地址
+https://cloud.r-project.org/
+
+Rstudio下载地址
+https://www.rstudio.com/products/rstudio/download/#download
+
+关联jupyter notebook
+install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'))
+devtools::install_github('IRkernel/IRkernel')
+IRkernel::installspec()
