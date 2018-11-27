@@ -8,3 +8,7 @@ https://www.rstudio.com/products/rstudio/download/#download
 install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'))
 devtools::install_github('IRkernel/IRkernel')
 IRkernel::installspec()
+
+rpy2模块
+1)将R目录添加至path环境变量 
+2)将R.dll添加至path环境变量 
