@@ -64,8 +64,7 @@ def crawl_turn(turn_url,abbr):
         return
     for item in browser.find_elements_by_css_selector("#main .Datapages-module__datapages___177x8 li"):
         river_url = item.find_element_by_tag_name('a').get_attribute("href")
-        print(river_url)
-        collection2.update({"abbr":abbr},{"$set":{"href":river_url}},upsert=True)
+        collection2.update({"abbr":abbr,"href":river_url},{"$set": {"finish": True}},upsert=True)
     collection.update({"abbr": abbr}, {"$set": {"finish": True}},upsert=True)
     print("%s的二级信息收集完毕" %(abbr))
     time.sleep(random.random() + 2)
