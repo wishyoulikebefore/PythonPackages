@@ -16,6 +16,8 @@ headers = {
 }
 
 start_url = "https://confluence.broadinstitute.org/display/GDAC/Dashboard-Stddata"
+if not os.path.exists("C:/Users/zuo_tianyu0101/Desktop/TIMER"):
+    os.mkdir("C:/Users/zuo_tianyu0101/Desktop/TIMER")
 os.chdir("C:/Users/zuo_tianyu0101/Desktop/TIMER")
 
 def first_target(start_url):
@@ -30,12 +32,10 @@ def first_target(start_url):
 def second_target(download_url,tumor_type):
     output = open("%s.sh" %(tumor_type),"a")
     output.write("#!/bin/sh\n")
-    output.write("mkdir %s\n" %(tumor_type))
-    output.write("cd %s\n" % (tumor_type))
     html_content = requests.get(download_url).text
     for href in re.findall(">(gdac\.broadinstitute\.org\S+gz)<", html_content):
         download_href = "%s/%s" %(download_url,href)
-        output.write("wget -q %s\n" %(download_href))
+        output.write("wget -t 0 %s\n" %(download_href))
     print("爬取完毕")
     output.close()
     time.sleep(2+random.random())
