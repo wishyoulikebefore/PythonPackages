@@ -50,7 +50,7 @@ def crawl_flop(start_url):
         data_type = label[0].rstrip()
         abbr = label[1].replace(") ", "")
         datasets_num = label[2].replace(" datasets)", "")
-        turn_url = item.find_element_by_tag_name('a').get_attribute("href")
+        turn_url = item.find_element_by_css_selector('a').get_attribute("href")
         print(turn_url)
         collection.update({"data_type":data_type,"abbr":abbr,"datasets_num":datasets_num},{"$set":{"href":turn_url}},upsert=True)
     print("主页面信息收集完毕")
@@ -64,8 +64,8 @@ def crawl_turn(turn_url,abbr):
         collection.update({"abbr": abbr}, {"$set": {"finish": False}})
         print("%s抓取失败" % (turn_url))
         return
-    for item in browser.find_elements_by_css_selector("#main .Datapages-module__datapages___177x8 li"):
-        river_url = item.find_element_by_tag_name('a').get_attribute("href")
+    for item in browser.find_elements_by_css_selector("#main .Datapages-module__datapages___177x8 li a"):
+        river_url = item.get_attribute("href")
         collection2.update({"abbr":abbr,"href":river_url},{"$set": {"finish": True}},upsert=True)
     collection.update({"abbr": abbr}, {"$set": {"finish": True}},upsert=True)
     print("%s的二级信息收集完毕" % (abbr))
