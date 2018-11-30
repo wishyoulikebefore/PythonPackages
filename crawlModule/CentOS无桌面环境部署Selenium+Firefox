@@ -33,3 +33,4 @@ display.stop()
 
 出现诡异的bug：
 必须要python命令行启动，否则不加载js代码
+export $(dbus-launch)
