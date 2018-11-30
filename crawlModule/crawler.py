@@ -6,6 +6,18 @@ import time
 import random
 from pymongo import MongoClient
 import re
+from functools import wraps
+import multiprocessing
+
+"""
+遇到个使用MP的问题：
+如果使用MP，crawl_river里要纳入browser = webdriver.Firefox()和browser.close()，这一过程需要耗费额外时间
+此外river_check()这一步也需要改写
+----------------
+需要VPN打开的网页加载速度慢，VPN速度是否支持4个网页同时正常加载
+----------------
+centos无法脚本启动的原因？
+"""
 
 browser = webdriver.Firefox()
 client = MongoClient()
@@ -13,22 +25,23 @@ db = client['TCGA']
 collection = db["record"]
 collection2 = db["monitor"]
 
-start_url = "https://xenabrowser.net/datapages/?hub=https://tcga.xenahubs.net:443"
-
-
-def start_crawl(start_url):
-    crawl_flop(start_url)
-    for item in collection.find():
-        turn_url = item["href"]
-        abbr = item["abbr"]
-        crawl_turn(turn_url, abbr)
-    turn_check()
-    for item in collection2.find():
-        river_url = item["href"]
-        abbr = item["abbr"]
-        crawl_river(river_url, abbr)
-    river_check()
-    browser.close()
+def conn_try_again(func, wait_time=3):
+    __retries = 3
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        nonlocal __retries
+        try:
+            return func(*args, **kwargs)
+        except:
+            if __retries > 0:
+                __retries -= 1
+                time.sleep(wait_time)
+                print("程序将在%s秒后重新运行" %(wait_time))
+                return wrapper(*args, **kwargs)
+            else:
+                print("网络状况可能不佳")
+                raise Exception
+    return wrapper
 
 
 def crawl_flop(start_url):
@@ -44,6 +57,7 @@ def crawl_flop(start_url):
     print("主页面信息收集完毕")
 
 
+@conn_try_again
 def crawl_turn(turn_url, abbr):
     if not collection.find_one({"abbr": abbr, "finish": True}):
         browser.get(turn_url)
@@ -65,11 +79,13 @@ def crawl_turn(turn_url, abbr):
         return
 
 def turn_check():
-    for item in collection.find({"finish": False}):
-        turn_url = item["href"]
-        abbr = item["abbr"]
-        crawl_turn(turn_url, abbr)
+    while collection.find_one({"finish":False}):
+        for item in collection.find({"finish": False}):
+            turn_url = item["href"]
+            abbr = item["abbr"]
+            crawl_turn(turn_url, abbr)
 
+@conn_try_again
 def crawl_river(river_url, abbr):
     if not collection2.find_one({"abbr": abbr, "href": river_url, "finish": True,"download_url":{"$exists":True}}):
         browser.get(river_url)
@@ -90,9 +106,22 @@ def crawl_river(river_url, abbr):
         return
 
 def river_check():
-    for item in collection.find({"finish": False}):
+    while collection2.find_one({"finish":False}):
+        for item in collection2.find({"finish": False}):
+            river_url = item["href"]
+            abbr = item["abbr"]
+            crawl_river(river_url, abbr)
+
+if __name__ == "__main__":
+    start_url = "https://xenabrowser.net/datapages/?hub=https://tcga.xenahubs.net:443"
+    crawl_flop(start_url)
+    for item in collection.find():
+        turn_url = item["href"]
+        abbr = item["abbr"]
+        crawl_turn(turn_url, abbr)
+    turn_check()
+    for item in collection2.find():
         river_url = item["href"]
         abbr = item["abbr"]
         crawl_river(river_url, abbr)
-
-start_crawl(start_url)
+    river_check()
