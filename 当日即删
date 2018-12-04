@@ -1,7 +1,0 @@
-1）输入密码不可见处理
-import getpass
-passwd=getpass.getpass("请输入密码：")
-
-2）.ini格式的配置文件
-from configparser import ConfigParser
-https://python3-cookbook.readthedocs.io/zh_CN/latest/c13/p10_read_configuration_files.html
