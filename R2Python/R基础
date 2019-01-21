@@ -1,0 +1,6 @@
+安装Bioconductor模块
+install.packages("BiocManager")
+BiocManager::install("Rhtslib")
+或者
+source("https://bioconductor.org/biocLite.R")
+biocLite(" ")
