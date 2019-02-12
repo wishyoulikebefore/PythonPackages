@@ -1,0 +1,9 @@
+核心问题
+1）映射
+本地启动ssh
+ssh -i CRO-dev-key.pem  root@47.100.111.11 -L127.0.0.1:1234:127.0.0.1:8888
+
+2）进出验证
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout CRO-dev-key.pem -out CRO-dev-key.pem
+
+具体参照截图
