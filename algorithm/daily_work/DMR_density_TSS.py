@@ -16,7 +16,9 @@ import argparse
 先判断是否在gene内（要考虑多个DMR在一个基因内）
 再看距离TSS的距离：20kb以内
 
-具体请见ipad
+具体思路请见ipad
+
+添加功能：区分Tumor和Normal
 """
 
 record = [] ## 输出两端距离TSS的值
@@ -24,9 +26,10 @@ record = [] ## 输出两端距离TSS的值
 def parse_args():
     parser = argparse.ArgumentParser(description="methylation level around TSS in different groups")
     parser.add_argument("-wd")
+    parser.add_argument("-type", default="all", help="T or N or all")
     parser.add_argument("-sd")
     args = parser.parse_args()
-    return args.wd,args.sd
+    return args.wd,args.type,args.sd
 
 def generate_gene_record():
     gene_record = []
@@ -88,7 +91,7 @@ def process(DMR_chr,DMR_start,DMR_end):
         ### 注意多个DMR位于同一个gene内
         gene_record.insert(0,now_gene_info)
 
-def pipeline(wd,sd,gene_record):
+def pipeline(wd,_type,sd,gene_record):
     countList = []
     os.chdir(wd)
     for sample_pair in glob.glob("*T_*N"):
@@ -106,6 +109,13 @@ def pipeline(wd,sd,gene_record):
                 _chr = lineList[0]
                 start = int(lineList[1])
                 end = int(lineList[2])
+                DMR_diff = float(lineList[4])
+                if _type == "T" and DMR_diff < 0:
+                    continue
+                elif _type == "N" and DMR_diff > 0:
+                    continue
+                else:
+                    pass
                 try:
                     process(_chr, start, end)
                 except IndexError:
@@ -128,9 +138,9 @@ def pipeline(wd,sd,gene_record):
     ax.set_xlabel("Distance to TSS(nt)",fontdict={"size": 16, "weight": "bold"})
     ax.set_ylabel("Density",fontdict={"size": 16, "weight": "bold"})
     ax.vlines(0,0,0.0002)
-    f.savefig("%s/DMR_density_TSS.png" %(sd), dpi=100,bbox_inches='tight')
+    f.savefig("%s/DMR_density_TSS_%s.png" %(sd,_type), dpi=100,bbox_inches='tight')
 
 if __name__ == "__main__":
-    wd,sd = parse_args()
+    wd,_type,sd = parse_args()
     gene_record = generate_gene_record()
-    pipeline(wd,sd,gene_record)
+    pipeline(wd,_type,sd,gene_record)
