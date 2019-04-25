@@ -7,7 +7,7 @@ doc = pq(requests.get(url,headers=headers).text)
 
 基本CSS选择器
 #id .class 节点
-content = doc("#sp_main .subject a")
+content = doc("#sp_main .subject li")
 先选取id为sp_main的节点，再选取其内部class为subject的节点，最后选取节点内部的所有li节点
 #可以叠加多个，空格分开
 
