@@ -48,3 +48,12 @@ Image(filename="C:/Users/zty/Desktop/groupby.jpg",width=300,height=400)
 方法2：
 %%html
 <img src="C:/Users/zty/Desktop/groupby.jpg",width=300,height=400>
+
+改变字体、大小、颜色以及高亮
+**<font color = red>红色+加粗</font>**
+*<font color = blue>蓝色+斜体</font>*
+***<font color=green>绿色+加粗+斜体</font>***
+<font color=steel size=5 face=雅黑>5号雅黑</font>
+<mark>黄色高亮<mark>
+<mark style=background-color:red>改变高亮颜色</mark> 
+<mark><font color=red size=4 face=雅黑>叠加字体的变化<font><mark>
