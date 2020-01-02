@@ -1,3 +1,7 @@
+选择颜色主题
+jt -t chesterish  # 使用chesterish主题
+jt -r  # 恢复默认主题
+
 1）快捷键
 从命令模式进入编辑模式需按 Enter 键，从编辑模式切换到命令模式需按Esc 键
 

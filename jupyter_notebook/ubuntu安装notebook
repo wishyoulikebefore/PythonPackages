@@ -1,0 +1,43 @@
+1.基础软件安装
+sudo apt install python3
+sudo apt install python3-pip
+pip3 install ipython
+pip3 install jupyter
+
+（选择国内镜像源）
+创建或修改文件：~/.pip/pip.conf
+[global]
+index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+
+或者
+-i https://pypi.tuna.tsinghua.edu.cn/simple
+
+2.配置
+jupyter notebook --generate-config # 如果是root用户好像要加--allow-root
+
+# ipython
+In [1]: from notebook.auth import passwd
+In [2]: passwd()
+Enter password:
+Out[2]: 'sha1:f8b5f5dbeca8:d1f5b93d5e787e4bf1bf4ad2c48c177ba79f55dd'     #这个秘钥要copy备用
+
+# 编辑刚才生成的配置文件修改以下：
+c.NotebookApp.ip = '0.0.0.0'  # 对外提供访问的ip
+c.NotebookApp.port = 8888 # 对外提供访问的端口
+c.NotebookApp.open_browser = False # 启动不打开浏览器
+c.NotebookApp.password = 'sha1:f8b5f5dbeca8:d1f5b93d5e787e4bf1bf4ad2c48c177ba79f55dd'  # 上面生成的秘钥
+c.NotebookApp.notebook_dir = u'/search/autotest/jupyter_dir' # 设置jupyter启动后默认文件夹
+c.NotebookApp.allow_root = True  # 允许root用户执行
+
+3.安装插件
+pip3 install jupyter_contrib_nbextensions
+jupyter contrib nbextension install --user
+
+4.安装主题插件
+pip3 install jupyterthemes  # 安装
+jt -t chesterish  # 使用chesterish主题（可能需要重启jupyter）
+
+5. 启动
+jupyter notebook --config /home/ubuntu/.jupyter/jupyter_notebook_config.py --allow-root
+如果登陆失败，则可能是服务器防火墙设置的问题，在本地建立一个ssh通道
+ssh username@address_of_remote -L127.0.0.1:1234:127.0.0.1:8888 
