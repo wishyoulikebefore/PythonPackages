@@ -1,3 +1,0 @@
-cov(m, y=None, rowvar=True)  计算协方差
-#默认rowvar=True，即index指代变量，columns指代观察值
-计算结果：对角线为方差
