@@ -16,7 +16,12 @@ df["订单号"].str[:4]
 df["订单号"].extract("(\d+)")
 
 4）解决console显示值省略
-pd.set_option('display.max_colwidth',1000)
+#显示所有列
+pd.set_option('display.max_columns', None)
+#显示所有行
+pd.set_option('display.max_rows', None)
+#若想不以科学计数显示:
+numpy.set_printoptions(suppress = True)
 
 5）矢量化的字符串函数：通过Series.str属性访问
 -----------------------------------------------------
