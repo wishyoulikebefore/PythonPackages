@@ -1,3 +1,7 @@
 datetime.time学习
 
-Python cookbook：https://python3-cookbook.readthedocs.io/zh_CN/latest/c07/p10_carry_extra_state_with_callback_functions.html
+Python cookbook：https://python3-cookbook.readthedocs.io/zh_CN/latest/c08/p12_define_interface_or_abstract_base_class.html
+
+https://www.myquant.cn/docs/python_strategyies/153
+
+__get__
