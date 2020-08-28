@@ -1,8 +1,0 @@
-概率分布分为：离散概率分布(discrete)和连续概率分布(continuous)
-(1)离散概率分布，即概率质量函数（probability mass function, pmf）：包括伯努利分布，二项分布，泊松分布和几何分布
-(2)连续概率分布，即概率密度函数（probability density function, pdf）：包括正态分布，指数分布和β分布
-
-
-二项分布：stats.binom.pmf
-
-泊松分布：stats.poisson.pmf
