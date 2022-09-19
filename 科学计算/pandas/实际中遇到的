@@ -15,6 +15,9 @@ df['柜台名称'].str.split('-',expand=True)
 df["订单号"].str[:4]
 df["订单号"].extract("(\d+)")
 
+4）颠倒行的顺序
+df = df.iloc[::1, :]
+
 4）解决console显示值省略
 #显示所有列
 pd.set_option('display.max_columns', None)
